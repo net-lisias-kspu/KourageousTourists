@@ -1,5 +1,9 @@
 # Kourageous Tourists :: Change Log
 
+* 2017-1006: 0.3 (whale2) for KSP 1.3 PRE-RELEASE
+	+ Release Candidate.
+	+ Features:
+	+ New contract - some tourists want to get a picture of themselves in front of some unusual objects.
 * 2017-0814: 0.2 (whale2) for KSP 1.3 PRE-RELEASE
 	+ This is still pre-release, however most things should work.
 	+ Fixes:
