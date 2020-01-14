@@ -1,5 +1,11 @@
 # Kourageous Tourists :: Change Log
 
+* 2017-0814: 0.2 (whale2) for KSP 1.3 PRE-RELEASE
+	+ This is still pre-release, however most things should work.
+	+ Fixes:
+			- Fixed contract persistence between saves and loads
+	+ Features:
+			- New contract - some tourists want to get a picture of themselves in some extrakerbestrial environment.
 * 2017-0809: 0.1 (whale2) for KSP 1.3 PRE-RELEASE
 	+ This is the first pre-release, be warned.
 	+ Features:
