@@ -437,7 +437,7 @@ namespace KourageousTourists
 
 				String fname = "../Screenshots/" + generateSelfieFileName ();
 				printDebug ("wrting file " + fname);
-				Application.CaptureScreenshot (fname);
+				ScreenCapture.CaptureScreenshot (fname);
 				taken = true;
 			}
 
