@@ -60,7 +60,6 @@
     </Reference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>cp "$(TargetPath)" "$(SolutionDir)/../GameData/KourageousTourists/Plugins"</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
