@@ -1,5 +1,11 @@
 # Kourageous Tourists :: Change Log
 
+* 2017-1102: 0.4.0 (whale2) for KSP ['1.3.1', '1.3']
+	+ Hotfix release
+	+ Bugfixes:
+			- Fixed ugly bug in FixedUpdate that was spamming log file.
+			- Fixed UFO being on Kerbin instead of Mun
+	+ [KourageousTourists-0.4.0.zip](https://github.com/whale2/KourageousTourists/files/1439604/KourageousTourists-0.4.0.zip)
 * 2017-1006: 0.3 (whale2) for KSP 1.3 PRE-RELEASE
 	+ Release Candidate.
 	+ Features:
