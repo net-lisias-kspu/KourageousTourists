@@ -45,6 +45,9 @@
     <Compile Include="Contracts\KourageousAnomalyParameter.cs" />
     <Compile Include="Contracts\KourageousSelfieParameter.cs" />
     <Compile Include="Contracts\KourageousAnomalyContract.cs" />
+    <Compile Include="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -63,5 +66,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Contracts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>
