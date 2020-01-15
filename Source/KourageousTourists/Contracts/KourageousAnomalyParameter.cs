@@ -27,8 +27,7 @@ namespace KourageousTourists
 		}
 
 		protected void setDistance() {
-			ConfigNode config = GameDatabase.Instance.GetConfigNodes(
-				KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
+			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
 			this.minAnomalyDistance = defaultMinAnomalyDistance;
 			if (config != null) {
 

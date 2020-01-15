@@ -43,8 +43,7 @@ namespace KourageousTourists
 				return;
 			
 			anomalies = new Dictionary<String, KourageousAnomaly> ();
-			ConfigNode config = GameDatabase.Instance.GetConfigNodes(
-				KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
+			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
 			if (config == null)
 				return;
 
