@@ -152,12 +152,19 @@ namespace KourageousTourists
 			Tourist t;
 			if (!tourists.TryGetValue(crew.name, out t))
 				return;
-			Log.dbg("tourist: {0}", t);
-			if (!Tourist.isTourist (crew) || t.hasAbility ("Jetpack"))
+
+			if (Tourist.isTourist(crew))
+				Log.dbg("tourist: {0}", t);
+			else
+			{
+				Log.err("{0} should be a turist, but it's not!!", crew);
+				return;
+			}
+
+			if (t.hasAbility ("Jetpack"))
 				return;
 
-			evaData.to.RequestResource (v.evaController.propellantResourceName, 
-				v.evaController.propellantResourceDefaultAmount);
+			evaData.to.RequestResource (v.evaController.propellantResourceName, v.evaController.propellantResourceDefaultAmount);
 			// Set propellantResourceDefaultAmount to 0 for EVAFuel to recognize it.
 			v.evaController.propellantResourceDefaultAmount = 0.0;
 			
