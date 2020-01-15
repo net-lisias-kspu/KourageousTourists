@@ -34,6 +34,6 @@ cp README.md  "./GameData/$TARGETDIR"
 cp INSTALL.md  "./GameData/$TARGETDIR"
 cp LICENSE "./GameData/$TARGETDIR"
 cp NOTICE "./GameData/$TARGETDIR"
-for dll in NavUtilLib NavUtilRPM ; do
+for dll in $DLLS ; do
     deploy $dll
 done
