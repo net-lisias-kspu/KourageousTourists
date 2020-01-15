@@ -16,7 +16,6 @@ namespace KourageousTourists
 		
 		public const String cfgRoot = "KOURAGECONFIG";
 		public const String cfgLevel = "LEVEL";
-		public const String debugLog = "debuglog";
 
 		private const String audioPath = "KourageousTourists/Sounds/shutter";
 
@@ -37,7 +36,6 @@ namespace KourageousTourists
 
 		public double RCSamount;
 		public double RCSMax;
-		internal static bool debug = true;
 
 		bool highGee = false;
 
@@ -49,13 +47,17 @@ namespace KourageousTourists
 
 		public void Awake()
 		{
-			ConfigNode config = GameDatabase.Instance.GetConfigNodes(
-				KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
-			String debugState = config.GetValue ("debug");
-			debug = debugState != null && 
-				(debugState.ToLower ().Equals ("true") || debugState.Equals ("1"));
-		
+			{
+				KSPe.IO.KspConfigNode config = new KSPe.IO.KspConfigNode("Debug", "PluginData", "Debug.cfg");
+				if (config.IsLoadable)
+				{
+					bool debug = false;
+					if (config.Load().Node.TryGetValue("debugMode", ref debug))
+						Log.debuglevel = debug? 5 : 1;
 
+				}
+			}
+			
 			Log.dbg("entered KourageousTourists Awake scene:{0}", HighLogic.LoadedScene);
 
 			GameEvents.OnVesselRecoveryRequested.Add (OnVesselRecoveryRequested);

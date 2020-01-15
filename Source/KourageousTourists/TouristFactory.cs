@@ -52,11 +52,6 @@ namespace KourageousTourists
 				return false;
 			}
 
-			// TODO: Remove this coupling
-			String dbg = config.GetValue (KourageousTouristsAddOn.debugLog);
-			if (dbg != null)
-				KourageousTouristsAddOn.debug = dbg.ToLower ().Equals ("true");
-
 			ConfigNode[] nodes = config.GetNodes (KourageousTouristsAddOn.cfgLevel);
 			foreach (ConfigNode cfg in nodes) {
 
