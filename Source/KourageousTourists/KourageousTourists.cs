@@ -110,11 +110,18 @@ namespace KourageousTourists
 				Log.err(e, "Got Exception while attempting to access loaded vessels");
 			}
 
+			GameEvents.onVesselRecovered.Remove(OnVesselRecoveredOffGame);
+			GameEvents.onKerbalLevelUp.Remove(OnKerbalLevelUp);
+			GameEvents.onCrewOnEva.Remove(OnEvaStart);
+			GameEvents.onCrewBoardVessel.Remove(OnCrewBoardVessel);
+			GameEvents.onVesselWillDestroy.Remove(OnVesselWillDestroy);
+			GameEvents.onVesselChange.Remove(OnVesselChange);
+			GameEvents.onVesselCreate.Remove(OnVesselCreate);
+			GameEvents.onNewVesselCreated.Remove(OnNewVesselCreated);
+
+			GameEvents.onAttemptEva.Remove(OnAttemptEVA);
+			GameEvents.onFlightReady.Remove(OnFlightReady);
 			GameEvents.onVesselGoOffRails.Remove (OnVesselGoOffRails);
-			GameEvents.onFlightReady.Remove (OnFlightReady);
-			GameEvents.onAttemptEva.Remove (OnAttemptEVA);
-			GameEvents.onVesselChange.Remove (OnVesselChange);
-			GameEvents.onVesselWillDestroy.Remove (OnVesselWillDestroy);
 
 			tourists = null;
 			factory = null; // do we really need this?
