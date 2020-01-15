@@ -13,7 +13,7 @@ Unofficial fork by Lisias.
 * Documentation
 	+ [Project's README](https://github.com/net-lisias-kspu/KourageusTourists/blob/master/README.md)
 	+ [Install Instructions](https://github.com/net-lisias-kspu/KourageusTourists/blob/master/INSTALL.md)
-	+ [Tech Docs](https://github.com/net-lisias-kspu/KourageusTourists/blob/master/Docs/index.md)
+	+ [Known Issues](https://github.com/net-lisias-kspu/KourageusTourists/blob/master/KNOWN_ISSUES.md)
 	+ [Change Log](./CHANGE_LOG.md)
 	+ [TODO](./TODO.md) list
 
