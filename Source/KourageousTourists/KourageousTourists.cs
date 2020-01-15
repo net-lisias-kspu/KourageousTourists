@@ -76,8 +76,8 @@ namespace KourageousTourists
 			GameEvents.onFlightReady.Add (OnFlightReady);
 			GameEvents.onAttemptEva.Add (OnAttemptEVA);
 
-			//GameEvents.onNewVesselCreated.Add (OnNewVesselCreated);
-			//GameEvents.onVesselCreate.Add (OnVesselCreate);
+			GameEvents.onNewVesselCreated.Add (OnNewVesselCreated);
+			GameEvents.onVesselCreate.Add (OnVesselCreate);
 			GameEvents.onVesselChange.Add (OnVesselChange);
 			GameEvents.onVesselWillDestroy.Add (OnVesselWillDestroy);
 			GameEvents.onCrewBoardVessel.Add (OnCrewBoardVessel);
