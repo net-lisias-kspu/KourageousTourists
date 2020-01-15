@@ -427,9 +427,10 @@ namespace KourageousTourists
 				}
 				else Log.warn("snd is null");
 
-				String fname = "../Screenshots/" + generateSelfieFileName ();
-				Log.detail("writing file " + fname);
-				ScreenCapture.CaptureScreenshot (fname);
+				String fname = this.generateSelfieFileName();
+				Log.info("Saving selfie to {0}", fname);
+				String pathname = KSPe.IO.File.CalculateKspPath(KSPe.IO.File.SCREENSHOT, fname);
+				ScreenCapture.CaptureScreenshot(pathname);
 				taken = true;
 			}
 
