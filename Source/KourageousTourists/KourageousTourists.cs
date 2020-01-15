@@ -15,7 +15,7 @@ namespace KourageousTourists
 		public const String cfgRoot = "KOURAGECONFIG";
 		public const String cfgLevel = "LEVEL";
 
-		private const String audioPath = "KourageousTourists/Sounds/shutter";
+		private readonly String audioPath = KSPe.GameDB.Asset<KourageousTouristsAddOn>.Solve("Sounds", "shutter");
 
 		private TouristFactory factory = null;
 		// We keep every kerbal in scene in here just to make every one of them smile
