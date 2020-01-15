@@ -443,7 +443,7 @@ namespace KourageousTourists
 
 				String fname = this.generateSelfieFileName();
 				Log.info("Saving selfie to {0}", fname);
-				String pathname = KSPe.IO.File.CalculateKspPath(KSPe.IO.File.SCREENSHOT, fname);
+				String pathname = KSPe.IO.Hierarchy.SCREENSHOT.Solve(fname);
 				ScreenCapture.CaptureScreenshot(pathname);
 				taken = true;
 			}
@@ -476,7 +476,7 @@ namespace KourageousTourists
 
 			//FlightGlobals.ActiveVessel.evaController.part.Events ["TakeSelfie"].active = false;
 			GameEvents.onHideUI.Fire();
-			Log.detail("Selfie ");
+			Log.detail("Selfie...!");
 
 			/*FlightCamera camera = FlightCamera.fetch;
 			savedCameraPosition = camera.transform.position;
