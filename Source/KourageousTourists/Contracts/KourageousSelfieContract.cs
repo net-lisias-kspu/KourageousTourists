@@ -12,19 +12,19 @@ namespace KourageousTourists
 		protected override bool Generate()
 			//System.Type contractType, Contract.ContractPrestige difficulty, int seed, State state)
 		{
-			KourageousTouristsAddOn.printDebug ("entered");
+			Log.dbg("entered KourageousSelfieContract Generate");
 
 			targetBody = selectNextCelestialBody ();
 			if (targetBody == null)
 				return false;
 
 			this.numTourists = UnityEngine.Random.Range (2, 5);
-			KourageousTouristsAddOn.printDebug ("num tourists: " + numTourists);
+			Log.dbg("num tourists: " + numTourists);
 			for (int i = 0; i < this.numTourists; i++) {
 				ProtoCrewMember tourist = CrewGenerator.RandomCrewMemberPrototype (ProtoCrewMember.KerbalType.Tourist);
 
 				this.tourists.Add (tourist);
-				KourageousTouristsAddOn.printDebug ("generated: " + tourist.name);
+				Log.dbg("generated: {0}", tourist.name);
 
 				// TODO: Add support for gender for 1.3 build
 				KerbalTourParameter itinerary = new KerbalTourParameter (tourist.name, tourist.gender);
@@ -78,10 +78,10 @@ namespace KourageousTourists
 		}
 
 		protected override void OnAccepted() {
-			KourageousTouristsAddOn.printDebug ("entered: body=" + targetBody.bodyName);
+			Log.dbg("entered: KourageousSelfieContract OnAccepted body={0}", targetBody.bodyName);
 			foreach (ProtoCrewMember tourist in tourists) {
 				HighLogic.CurrentGame.CrewRoster.AddCrewMember (tourist);
-				KourageousTouristsAddOn.printDebug ("adding to roster: " + tourist.name);
+				Log.dbg("adding to roster: {0}", tourist.name);
 			}
 		}
 

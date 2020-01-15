@@ -36,12 +36,13 @@ namespace KourageousTourists
 				if (dscvr != null) {
 					try {
 						this.minAnomalyDistance = (float)Convert.ToDouble (dscvr);
-					} catch (Exception) {
+					} catch (Exception e) {
+						Log.ex(this, e);
 					}
 				}
 			}
 			else
-				KourageousTouristsAddOn.printDebug ("no config found in game database");
+				Log.warn("no config found in game database");
 		}
 
 		protected override string GetHashString() {
@@ -68,7 +69,7 @@ namespace KourageousTourists
 
 		private void onSelfieTaken() {
 
-			KourageousTouristsAddOn.printDebug ("here");
+			Log.dbg("onSelfieTaken");
 			foreach (Vessel v in FlightGlobals.VesselsLoaded) {
 				if (
 					v.mainBody == targetBody &&
@@ -76,7 +77,7 @@ namespace KourageousTourists
 					v.GetVesselCrew().Count == 1 &&
 					v.situation == Vessel.Situations.LANDED && v.isEVA) {
 
-					KourageousTouristsAddOn.printDebug ("checking for " + tourist + " at " + anomalyName);
+					Log.dbg("checking for {0} at {1}", tourist, anomalyName);
 					if (this.isNearbyAnomaly (v, anomalyName)) {
 						base.SetComplete ();
 					}
@@ -96,7 +97,7 @@ namespace KourageousTourists
 				Component[] c = anomalyObj.GetComponents<PQSCity> ();
 				if (c == null || c.Length == 0)
 					continue;
-				KourageousTouristsAddOn.printDebug ("has pqscity: " + anomalyObj.name);
+				Log.dbg("has pqscity: {0}", anomalyObj.name);
 				PQSCity pqscity = (PQSCity)c [0];
 				if (pqscity == null)
 					continue;
@@ -111,8 +112,7 @@ namespace KourageousTourists
 				if (tr == null)
 					return false;
 				float dist1 = Vector3.Distance (v.transform.position, tr.position);
-				KourageousTouristsAddOn.printDebug ("distance: " + dist1.ToString() + 
-					"; min dist: " + minAnomalyDistance.ToString());
+				Log.dbg("distance: {0}; min dist: {1}", dist1, minAnomalyDistance);
 				if (dist1 < this.minAnomalyDistance)
 					return true;
 			}
@@ -126,7 +126,7 @@ namespace KourageousTourists
 			KourageousAnomalyContract.readAnomalyConfig ();
 			this.anomalyDisplayName = 
 				KourageousAnomalyContract.anomalies [targetBody.name + ":" + anomalyName].anomalyDescription;
-			KourageousTouristsAddOn.printDebug ("display name: " + anomalyDisplayName);
+			Log.dbg("display name: {0}", anomalyDisplayName);
 			setDistance ();
 		}
 

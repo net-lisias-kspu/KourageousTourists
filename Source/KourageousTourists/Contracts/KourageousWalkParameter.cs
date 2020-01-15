@@ -19,7 +19,7 @@ namespace KourageousTourists
 		}
 
 		protected override void OnRegister() {
-			KourageousTouristsAddOn.printDebug ("setting event OnEva");
+			Log.detail("setting event OnEva");
 			GameEvents.onCrewOnEva.Add (OnEva);
 			GameEvents.onVesselSituationChange.Add (OnSituationChange);
 		}
@@ -38,18 +38,20 @@ namespace KourageousTourists
 
 		private void OnEva(GameEvents.FromToAction<Part, Part> action) {
 			Vessel v = action.to.vessel;
-			KourageousTouristsAddOn.printDebug (
-				String.Format("triggered; vessel: {0}, {1}; param tourist: {2}; body: {3}; vessel situation: {4}; vessel body: {5}",
-					action.to.vessel, action.from.vessel, this.tourist, this.targetBody.bodyName, v.situation, v.mainBody.bodyName));
+			Log.detail(
+					"triggered; vessel: {0}, {1}; param tourist: {2}; body: {3}; vessel situation: {4}; vessel body: {5}",
+					action.to.vessel, action.from.vessel, this.tourist, this.targetBody.bodyName, v.situation, v.mainBody.bodyName
+				);
 			
 			checkCompletion (v);
 		}
 
 		private void checkCompletion(Vessel v) {
 
+#if DEBUG
 			foreach(ProtoCrewMember c in v.GetVesselCrew())
-				KourageousTouristsAddOn.printDebug (
-					String.Format("param vessel crew: {0}",c.name));
+				Log.dbg("param vessel crew: {0}",c.name);
+#endif
 			if (v.isEVA &&
 				v.mainBody == targetBody &&
 				v.GetVesselCrew () [0].name.Equals(tourist) &&

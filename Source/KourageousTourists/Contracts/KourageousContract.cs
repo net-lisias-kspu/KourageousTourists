@@ -68,19 +68,19 @@ namespace KourageousTourists
 					targetBody = body;
 			}
 			ConfigNode touristNode = node.GetNode ("TOURISTS");
-			KourageousTouristsAddOn.printDebug ("tourist node: " + touristNode);
+			Log.dbg("tourist node: {0}", touristNode);
 			if (touristNode == null) {
-				KourageousTouristsAddOn.printDebug ("Can't load tourists from save file");
+				Log.warn("Can't load tourists from save file");
 				return;
 			}
 			foreach (ConfigNode crewNode in touristNode.GetNodes()) {
-				KourageousTouristsAddOn.printDebug ("tourist: " + crewNode);
+				Log.dbg("tourist: {0}", crewNode);
 				this.tourists.Add (
 					new ProtoCrewMember (
 						HighLogic.CurrentGame.Mode, crewNode, ProtoCrewMember.KerbalType.Tourist));
 			}
 			this.numTourists = tourists.Count;
-			KourageousTouristsAddOn.printDebug ("numtourists: " + this.numTourists + "; " + tourists.Count);
+			Log.detail("numtourists: {0}; {1}", this.numTourists, tourists.Count);
 		}
 
 		protected override void OnSave (ConfigNode node)

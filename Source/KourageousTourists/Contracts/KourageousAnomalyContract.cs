@@ -54,7 +54,8 @@ namespace KourageousTourists
 				try {
 					anomalyDiscoveryDistance = (float)Convert.ToDouble(distanceNode);
 				}
-				catch(Exception) {
+				catch(Exception e) {
+					Log.err(e, "KourageousAnomalyContract readAnomalyConfig");
 				}
 			}
 
@@ -63,13 +64,13 @@ namespace KourageousTourists
 
 				KourageousAnomaly anomaly = new KourageousAnomaly ();
 
-				KourageousTouristsAddOn.printDebug (String.Format ("cfg node: {0}", node));
+				Log.dbg("cfg node: {0}", node);
 				String name = node.GetValue("name");
 				if (name == null)
 					continue;
 				anomaly.name = name;
 
-				KourageousTouristsAddOn.printDebug (String.Format ("anomaly name: {0}", name));
+				Log.dbg("anomaly name: {0}", name);
 				String anomalyDescription = node.GetValue ("anomalyDescription");
 				if (anomalyDescription == null)
 					continue;
@@ -86,52 +87,51 @@ namespace KourageousTourists
 				anomaly.contractSynopsis = contractSynopsis;
 
 				String bodyStr = node.GetValue ("body");
-				KourageousTouristsAddOn.printDebug (String.Format ("anomaly body: {0}", bodyStr));
+				Log.dbg("anomaly body: {0}", bodyStr);
 
 				foreach (CelestialBody b in FlightGlobals.Bodies) {
-					KourageousTouristsAddOn.printDebug (String.Format ("list body name: {0}", b.name));
+					Log.dbg("list body name: {0}", b.name);
 					if (b.name.Equals (bodyStr)) {
 						anomaly.body = b;
 						break;
 					}
 				}
-				KourageousTouristsAddOn.printDebug (String.Format ("anomaly body obj: {0}", anomaly.body == null));
+				Log.dbg("anomaly body obj: {0}", anomaly.body == null);
 				if (anomaly.body == null)
 					continue;
 				
 				String payoutModifierStr = node.GetValue ("payoutModifier");
-				KourageousTouristsAddOn.printDebug (String.Format ("payout modifier str: {0}", payoutModifierStr));
+				Log.dbg("payout modifier str: {0}", payoutModifierStr);
 				if (payoutModifierStr == null)
 					continue;
 				float payoutModifier = 1.0f;
 				try {
 					payoutModifier = (float)Convert.ToDouble(payoutModifierStr);
-					KourageousTouristsAddOn.printDebug (String.Format ("payout modifier: {0}", payoutModifier));
+					Log.dbg("payout modifier: {0}", payoutModifier);
 				}
-				catch(Exception) {
+				catch(Exception e) {
+					Log.err(e, "readAnomalyConfig");
 				}
 				anomaly.payoutModifier = payoutModifier;
 
 				anomalies.Add (bodyStr + ":" + name, anomaly);
-				KourageousTouristsAddOn.printDebug (String.Format ("added: {0}", bodyStr + ":" + name));
+				Log.dbg("added: {0}", bodyStr + ":" + name);
 			}
 			
 		}
 
 		protected KourageousAnomaly chooseAnomaly(CelestialBody body) {
 
-			KourageousTouristsAddOn.printDebug ("entered");
+			Log.dbg("entered KourageousAnomallyContract chooseAnomaly");
 			readAnomalyConfig ();
-			KourageousTouristsAddOn.printDebug (String.Format("anomalies: {0}, distance: {1}", 
-				anomalies.Count, anomalyDiscoveryDistance));
+			Log.dbg("anomalies: {0}, distance: {1}", anomalies.Count, anomalyDiscoveryDistance);
 
 			List<KourageousAnomaly> chosen = new List<KourageousAnomaly> ();
 			foreach (KeyValuePair<string, KourageousAnomaly> entry in anomalies)
 				if (entry.Value.body.name.Equals (body.name))
 					chosen.Add (entry.Value);
 
-			KourageousTouristsAddOn.printDebug (String.Format("chosen: {0}, cnt: {1}", 
-				chosen, chosen.Count));
+			Log.dbg("chosen: {0}, cnt: {1}", chosen, chosen.Count);
 			if (chosen.Count == 0)
 				return null;
 
@@ -143,7 +143,7 @@ namespace KourageousTourists
 		protected override bool Generate()
 			//System.Type contractType, Contract.ContractPrestige difficulty, int seed, State state)
 		{
-			KourageousTouristsAddOn.printDebug ("entered");
+			Log.dbg("entered KourageousAnomallyContract Generate");
 
 			targetBody = selectNextCelestialBody ();
 			if (targetBody == null)
@@ -154,12 +154,12 @@ namespace KourageousTourists
 				return false;
 			
 			this.numTourists = UnityEngine.Random.Range (2, 5);
-			KourageousTouristsAddOn.printDebug ("num tourists: " + numTourists);
+			Log.dbg("num tourists: {0}", numTourists);
 			for (int i = 0; i < this.numTourists; i++) {
 				ProtoCrewMember tourist = CrewGenerator.RandomCrewMemberPrototype (ProtoCrewMember.KerbalType.Tourist);
 
 				this.tourists.Add (tourist);
-				KourageousTouristsAddOn.printDebug ("generated: " + tourist.name);
+				Log.dbg("generated: {0}", tourist.name);
 
 				// TODO: Add support for gender for 1.3 build
 				KerbalTourParameter itinerary = new KerbalTourParameter (tourist.name, tourist.gender);
@@ -211,10 +211,10 @@ namespace KourageousTourists
 		}
 
 		protected override void OnAccepted() {
-			KourageousTouristsAddOn.printDebug ("entered: body=" + targetBody.bodyName);
+			Log.dbg("entered: KourageousAnomallyContract Generate body={0}", targetBody.bodyName);
 			foreach (ProtoCrewMember tourist in tourists) {
 				HighLogic.CurrentGame.CrewRoster.AddCrewMember (tourist);
-				KourageousTouristsAddOn.printDebug ("adding to roster: " + tourist.name);
+				Log.dbg("adding to roster: {0}", tourist.name);
 			}
 		}
 
@@ -237,7 +237,7 @@ namespace KourageousTourists
 		}
 
 		protected override string GetTitle () {
-			KourageousTouristsAddOn.printDebug ("entered: anomaly=" + chosenAnomaly);
+			Log.dbg("entered: KourageousAnomallyContract GetTitle anomaly={0}", chosenAnomaly);
 			return String.Format("Visit {0} with {1}",
 				chosenAnomaly.anomalyDescription,  getProperTouristWordLc());
 		}

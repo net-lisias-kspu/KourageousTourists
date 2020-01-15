@@ -23,13 +23,13 @@ namespace KourageousTourists
 
 			Tourist t = new Tourist ();
 			if (!initialized) {
-				KourageousTouristsAddOn.printDebug ("TouristFactory not initialized, can't make tourists!");
+				Log.warn("TouristFactory not initialized, can't make tourists!");
 				return t;
 			}
 
 			ProtoTourist pt;
 			if (!touristConfig.TryGetValue (level, out pt)) {
-				KourageousTouristsAddOn.printDebug ("Can't find config for level " + level);
+				Log.warn("Can't find config for level " + level);
 				return t;
 			}
 
@@ -45,10 +45,10 @@ namespace KourageousTourists
 
 		private bool readConfig() 
 		{
-			KourageousTouristsAddOn.printDebug ("reading config");
+			Log.dbg("reading config");
 			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
 			if (config == null) {
-				KourageousTouristsAddOn.printDebug ("no config found in game database");
+				Log.dbg("no config found in game database");
 				return false;
 			}
 
@@ -62,15 +62,15 @@ namespace KourageousTourists
 
 				String tLvl = cfg.GetValue("touristlevel");
 				if (tLvl == null) {
-					KourageousTouristsAddOn.printDebug ("tourist config entry has no attribute 'level'");
+					Log.dbg("tourist config entry has no attribute 'level'");
 					return false;
 				}
 
-				KourageousTouristsAddOn.printDebug ("lvl=" + tLvl);
+				Log.dbg("lvl={0}", tLvl);
 				ProtoTourist t = new ProtoTourist ();
 				int lvl;
 				if (!Int32.TryParse (tLvl, out lvl)) {
-					KourageousTouristsAddOn.printDebug ("Can't parse tourist level as int: " + tLvl);
+					Log.dbg("Can't parse tourist level as int: {0}", tLvl);
 					return false;
 				}
 				t.level = lvl;
@@ -89,7 +89,7 @@ namespace KourageousTourists
 				t.abilities.RemoveAll(str => String.IsNullOrEmpty(str));
 				if (cfg.HasValue("srfspeed")) {
 					String srfSpeed = cfg.GetValue ("srfspeed");
-					KourageousTouristsAddOn.printDebug ("srfspeed = " + srfSpeed);
+					Log.dbg("srfspeed = {0}", srfSpeed);
 					double spd = 0.0;
 					if (Double.TryParse (srfSpeed, out spd))
 						t.srfspeed = spd;
@@ -97,7 +97,7 @@ namespace KourageousTourists
 						t.srfspeed = Double.NaN;
 				}
 
-				KourageousTouristsAddOn.printDebug ("Adding cfg: " + t.ToString());
+				Log.dbg("Adding cfg: {0}", t);
 				this.touristConfig.Add (lvl, t);
 			}
 			return true;
