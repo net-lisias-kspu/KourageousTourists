@@ -1,7 +1,7 @@
 source ../CONFIG.inc
 
 PACKAGE=KourageousTourists
-TARGETDIR="$PACKAGE"
+TARGETDIR="net-lisias-ksp/$PACKAGE"
 TARGETBINDIR="$TARGETDIR"
 PROJECTSDIR="$PACKAGE/"
 DLLS="KourageousTourists"
