@@ -36,7 +36,7 @@ namespace KourageousTourists
 					try {
 						this.minAnomalyDistance = (float)Convert.ToDouble (dscvr);
 					} catch (Exception e) {
-						Log.ex(this, e);
+						Log.error(e, this);
 					}
 				}
 			}

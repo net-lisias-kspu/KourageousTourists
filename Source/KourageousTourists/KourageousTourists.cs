@@ -45,17 +45,6 @@ namespace KourageousTourists
 
 		public void Awake()
 		{
-			{
-				KSPe.IO.KspConfigNode config = new KSPe.IO.KspConfigNode("Debug", "PluginData", "Debug.cfg");
-				if (config.IsLoadable)
-				{
-					bool debug = false;
-					if (config.Load().Node.TryGetValue("debugMode", ref debug))
-						Log.debuglevel = debug? 5 : 1;
-
-				}
-			}
-			
 			Log.dbg("entered KourageousTourists Awake scene:{0}", HighLogic.LoadedScene);
 
 			GameEvents.OnVesselRecoveryRequested.Add (OnVesselRecoveryRequested);
@@ -107,7 +96,7 @@ namespace KourageousTourists
 				}
 			}
 			catch(Exception e) {
-				Log.err(e, "Got Exception while attempting to access loaded vessels");
+				Log.error(e, "Got Exception while attempting to access loaded vessels");
 			}
 
 			GameEvents.onVesselRecovered.Remove(OnVesselRecoveredOffGame);
@@ -157,7 +146,7 @@ namespace KourageousTourists
 				Log.dbg("tourist: {0}", t);
 			else
 			{
-				Log.err("{0} should be a turist, but it's not!!", crew);
+				Log.error("{0} should be a turist, but it's not!!", crew);
 				return;
 			}
 
@@ -452,7 +441,7 @@ namespace KourageousTourists
 
 			if (!taken && 3 == sec)
 			{ // The emotions are taking more than a second to be executed by the Kerbal on KSP 1.7.3 . TODO: check other versions!
-				ScreenCapture.CaptureScreenshot(this.pathname);
+				KSPe.Util.Image.Screenshot.Capture(this.pathname);
 				taken = true;
 			}
 

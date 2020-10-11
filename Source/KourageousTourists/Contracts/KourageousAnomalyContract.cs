@@ -54,7 +54,7 @@ namespace KourageousTourists
 					anomalyDiscoveryDistance = (float)Convert.ToDouble(distanceNode);
 				}
 				catch(Exception e) {
-					Log.err(e, "KourageousAnomalyContract readAnomalyConfig");
+					Log.error(e, "KourageousAnomalyContract readAnomalyConfig");
 				}
 			}
 
@@ -109,7 +109,7 @@ namespace KourageousTourists
 					Log.dbg("payout modifier: {0}", payoutModifier);
 				}
 				catch(Exception e) {
-					Log.err(e, "readAnomalyConfig");
+					Log.error(e, "readAnomalyConfig");
 				}
 				anomaly.payoutModifier = payoutModifier;
 
