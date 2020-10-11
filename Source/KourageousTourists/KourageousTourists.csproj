@@ -51,6 +51,8 @@
     </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ChuteSupport.cs" />
+    <Compile Include="GUI\ShowStopperAlertBox.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -63,13 +65,13 @@
     </Reference>
     <Compile Include="Contracts\KourageousSkydiveContract.cs" />
     <Compile Include="Contracts\KourageousSkydiveJumpParameter.cs" />
+    <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\LIB\managed\1.4.0\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LIB\managed\1.3.0\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\LIB\managed\1.4.0\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LIB\managed\1.3.0\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

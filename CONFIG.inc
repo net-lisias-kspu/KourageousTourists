@@ -6,6 +6,7 @@ TARGETBINDIR="$TARGETDIR"
 PROJECTSDIR="$PACKAGE/"
 
 DLLS="KourageousTourists"
+PD_DLLS="KourageousTourists.KSP13.RealChute KourageousTourists.KSP14 KourageousTourists.KSP14.RealChute"
 
 PROJECT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 if [ "$PROJECT_BRANCH" == "master" ] ; then

@@ -50,6 +50,22 @@ deploy_gamedata() {
 	fi
 }
 
+deploy_plugindata() {
+	local DLL=$1.dll
+
+	if [ -f "./bin/Release/$DLL" ] ; then
+		cp "./bin/Release/$DLL" "./GameData/$TARGETBINDIR/PluginData"
+		if [ -d "${KSP_DEV}/GameData/$TARGETBINDIR/PluginData" ] ; then
+			cp "./bin/Release/$DLL" "${KSP_DEV/}GameData/$TARGETBINDIR/PluginData/dlls"
+		fi
+	fi
+	if [ -f "./bin/Debug/$DLL" ] ; then
+		if [ -d "${KSP_DEV}/GameData/$TARGETBINDIR/PluginData" ] ; then
+			cp "./bin/Debug/$DLL" "${KSP_DEV}GameData/$TARGETBINDIR/PluginData/dlls"
+		fi
+	fi
+}
+
 VERSIONFILE=$PACKAGE.version
 
 check
@@ -62,6 +78,10 @@ cp NOTICE "./GameData/$TARGETDIR"
 for dll in $GD_DLLS ; do
     deploy_dev $dll
     deploy_gamedata $GD_PRIORITY $dll
+done
+
+for dll in $PD_DLLS ; do
+    deploy_plugindata $dll
 done
 
 for dll in $DLLS ; do
