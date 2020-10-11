@@ -1,9 +1,9 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
+using Asset = KSPe.IO.Asset<KourageousTourists.Startup>;
+using Data = KSPe.IO.Data<KourageousTourists.Startup>;
 
 namespace KourageousTourists
 {
@@ -12,6 +12,8 @@ namespace KourageousTourists
 
 		public Dictionary<int,ProtoTourist> touristConfig;
 		public bool initialized = false;
+
+        private static readonly Data.ConfigNode SETTINGS = Data.ConfigNode.For(KourageousTouristsAddOn.cfgRoot, "Kourage.cfg");
 
 		public TouristFactory ()
 		{
@@ -46,7 +48,21 @@ namespace KourageousTourists
 		private bool readConfig() 
 		{
 			Log.dbg("reading config");
-			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
+
+			if (!SETTINGS.IsLoadable)
+			{
+				Asset.ConfigNode defaults = Asset.ConfigNode.For(KourageousTouristsAddOn.cfgRoot, "Kourage.cfg");
+				if (!defaults.IsLoadable)
+				{
+					Log.error("Where is the default Kourage.cfg? Kourageous Tourists will not work properly without it!");
+					return false;
+				}
+				SETTINGS.Clear();
+				SETTINGS.Save(defaults.Load().Node);
+			}
+
+			ConfigNode config = SETTINGS.Load().Node;
+
 			if (config == null) {
 				Log.dbg("no config found in game database");
 				return false;
