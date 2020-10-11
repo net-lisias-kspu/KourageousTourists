@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+
+using Contracts;
+using KourageousTourists.Contracts;
 
 using Asset = KSPe.IO.Asset<KourageousTourists.Startup>;
 using Data = KSPe.IO.Data<KourageousTourists.Startup>;
@@ -42,10 +46,29 @@ namespace KourageousTourists
 			t.srfspeed = pt.srfspeed;
 			t.crew = crew;
 			t.rnd = new System.Random ();
+			t.isSkydiver = isSkyDiver (crew);
 			return t;
 		}
 
-		private bool readConfig() 
+		public static bool isSkyDiver(ProtoCrewMember crew) {
+			// Check if this kerbal is participating in any skydiving contract
+			if (HighLogic.CurrentGame.Mode != Game.Modes.CAREER)
+			{
+				return false;
+			}
+			foreach (Contract c in ContractSystem.Instance.Contracts)
+			{
+				var contract = c as KourageousSkydiveContract;
+				if (contract != null) {
+					if (contract.hasTourist (crew.name)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		private bool readConfig()
 		{
 			Log.dbg("reading config");
 

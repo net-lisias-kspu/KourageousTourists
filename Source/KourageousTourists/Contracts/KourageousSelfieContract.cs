@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Contracts;
 using FinePrint.Contracts.Parameters;
 
-namespace KourageousTourists
+namespace KourageousTourists.Contracts
 {
 	public class KourageousSelfieContract : KourageousContract
 	{
@@ -87,7 +85,7 @@ namespace KourageousTourists
 
 
 		public override bool CanBeCancelled() {
-			// TODO: Let's make that if any tourist is out of Kerbin, 
+			// TODO: Let's make that if any tourist is out of Kerbin,
 			// the contract can't be cancelled
 			return true;
 		}

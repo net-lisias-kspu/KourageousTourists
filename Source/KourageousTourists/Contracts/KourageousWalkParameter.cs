@@ -1,7 +1,6 @@
 ﻿using System;
-using Contracts;
 
-namespace KourageousTourists
+namespace KourageousTourists.Contracts
 {
 	public class KourageousWalkParameter: KourageousParameter 
 	{
@@ -54,6 +53,7 @@ namespace KourageousTourists
 #endif
 			if (v.isEVA &&
 				v.mainBody == targetBody &&
+				v.GetVesselCrew().Count == 1 &&
 				v.GetVesselCrew () [0].name.Equals(tourist) &&
 				v.situation == Vessel.Situations.LANDED)
 				base.SetComplete ();

@@ -1,9 +1,9 @@
 ﻿using System;
 using Contracts;
 
-namespace KourageousTourists
+namespace KourageousTourists.Contracts
 {
-	public abstract class KourageousParameter : Contracts.ContractParameter
+	public abstract class KourageousParameter : ContractParameter
 	{
 		protected CelestialBody targetBody;
 		protected string tourist;

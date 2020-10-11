@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Contracts;
 using UnityEngine;
 
-namespace KourageousTourists
+namespace KourageousTourists.Contracts
 {
 	public class KourageousAnomalyParameter: KourageousParameter 
 	{
@@ -72,8 +71,8 @@ namespace KourageousTourists
 			foreach (Vessel v in FlightGlobals.VesselsLoaded) {
 				if (
 					v.mainBody == targetBody &&
-					v.GetVesselCrew () [0].name.Equals (tourist) &&
 					v.GetVesselCrew().Count == 1 &&
+					v.GetVesselCrew () [0].name.Equals (tourist) &&
 					v.situation == Vessel.Situations.LANDED && v.isEVA) {
 
 					Log.dbg("checking for {0} at {1}", tourist, anomalyName);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Contracts;
 
 namespace KourageousTourists
@@ -18,15 +19,30 @@ namespace KourageousTourists
 			this.numTourists = 0;
 		}
 
-		protected CelestialBody selectNextCelestialBody() {
+		public bool hasTourist(string tourist) {
+			foreach (ProtoCrewMember crew in tourists) {
+				if (crew.name == tourist) {
+					return true;
+				}
+			}
+			return false;
+		}
 
-			List<CelestialBody> allBodies = Contract.GetBodies_Reached (false, false);
-			foreach (CelestialBody body in allBodies)
-				if (!body.hasSolidSurface)
-					allBodies.Remove (body);
+		protected CelestialBody selectNextCelestialBody()
+		{
+			List<CelestialBody> allBodies = getCelestialBodyList();
 			if (allBodies.Count < 1)
 				return null;
-			return allBodies [UnityEngine.Random.Range (0, allBodies.Count - 1)];
+			return allBodies[UnityEngine.Random.Range(0, allBodies.Count - 1)];
+		}
+
+		protected List<CelestialBody> getCelestialBodyList() {
+
+			List<CelestialBody> allBodies = 
+				GetBodies_Reached (false, false).Where(
+					b => b.hasSolidSurface).ToList();
+			Log.detail("celestials: {0}", String.Join(",", allBodies.Select(b => b.ToString()).ToArray()));
+			return allBodies;
 		}
 
 		// Perhaps this is implemented somewhere in Contract.TextGen
@@ -58,6 +74,24 @@ namespace KourageousTourists
 		}
 
 		protected virtual void GenerateHashString () {}
+
+		protected override void OnCompleted()
+		{
+			Log.detail("OnCompleted");
+
+			foreach (var tourist in tourists)
+			{
+				Log.detail("Setting hasToured for {0}", tourist.name);
+				KerbalRoster roster = HighLogic.CurrentGame.CrewRoster;
+				if (roster.Exists(tourist.name))
+				{
+					ProtoCrewMember t = roster[tourist.name];
+					t.type = ProtoCrewMember.KerbalType.Tourist;
+					t.hasToured = true;
+				}
+			}
+			base.OnCompleted();
+		}
 
 		protected override void OnLoad (ConfigNode node)
 		{

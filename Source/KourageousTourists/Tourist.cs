@@ -26,6 +26,7 @@ namespace KourageousTourists
 			whee = 0.0f;
 			fear = 0.0f;
 			rnd = new System.Random ();
+			isSkydiver = false;
 		}
 
 		public bool hasAbility(String ability) {
@@ -59,8 +60,32 @@ namespace KourageousTourists
 				return new EVAAttempt(String.Format("Level {0} tourists can not go EVA at all", 
 					level), false);
 
-			// message makes sense when they can not go EVA
-			return(checkSituation (v));
+			string noSkyDiveMessage = "";
+			EVAAttempt attempt;
+			// Check for skydiving. 
+			if (looksLikeSkydiving(v)) {
+				attempt = checkSkydivingAttempt (v);
+				if (attempt.status)
+				{
+					// if looks like skydiving and requirements are met - let them out
+					return attempt;
+				}
+
+				noSkyDiveMessage = attempt.message + "; ";
+			}
+			
+			// If we can go outside right away, so be it
+			attempt = checkSituation (v);
+			if (attempt.status) {
+				return attempt;
+			}
+
+			attempt.message = noSkyDiveMessage + attempt.message;
+			return(attempt);
+		}
+
+		internal bool looksLikeSkydiving(Vessel v) {
+			return isSkydiver && v.mainBody.atmosphere && v.situation == Vessel.Situations.FLYING;
 		}
 
 		private EVAAttempt checkSituation(Vessel v)
@@ -105,6 +130,33 @@ namespace KourageousTourists
 
 			// message makes sense when they can not go EVA
 			return new EVAAttempt(message, situationOk && celestialBodyOk && srfSpeedOk);
+		}
+
+		private EVAAttempt checkSkydivingAttempt(Vessel v) {
+			// Check if the situation is safe enough for sky diving
+			// Altitude above 1500m AGL
+			// Speed below 100 m/s
+
+
+			// if (this.level < 1) {
+			// 	return new EVAAttempt ("This tourist is not trained for skydiving!", false);
+			// }
+			bool srfSpeedOk = Math.Abs (v.srfSpeed) < KourageousTouristsAddOn.paraglidingMaxAirspeed;
+			bool altOk = v.radarAltitude > KourageousTouristsAddOn.paraglidingMinAltAGL;
+
+			String skyDiveMessage = "";
+			if (!srfSpeedOk) {
+				skyDiveMessage = String.Format ("Air speed {0:F2} m/s is too fast", v.srfSpeed);
+			}
+			if (!altOk) {
+				skyDiveMessage += String.Format ((srfSpeedOk ? "A" : " and a") + "ltitude {0} is not safe",
+					(int)v.radarAltitude);
+			}
+
+			if (!srfSpeedOk || !altOk) {
+				skyDiveMessage += " for skydiving";
+			}
+			return new EVAAttempt (skyDiveMessage, srfSpeedOk && altOk);
 		}
 	}
 }

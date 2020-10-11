@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using System.Collections;
 
 
 namespace KourageousTourists
@@ -11,9 +13,10 @@ namespace KourageousTourists
 	[KSPAddon(KSPAddon.Startup.EveryScene, false)]
 	public class KourageousTouristsAddOn : MonoBehaviour
 	{
-		
+
 		public const String cfgRoot = "KOURAGECONFIG";
 		public const String cfgLevel = "LEVEL";
+		public const String debugLog = "debuglog";
 
 		private readonly String audioPath = KSPe.GameDB.Asset<KourageousTouristsAddOn>.Solve("Sounds", "shutter");
 
@@ -35,6 +38,13 @@ namespace KourageousTourists
 		public double RCSamount;
 		public double RCSMax;
 
+		internal static bool debug = true;
+		public static bool noSkyDiving = false;
+		internal static float paraglidingChutePitch = 1.1f;
+		internal static float paraglidingDeployDelay = 5f;
+		public static float paraglidingMaxAirspeed = 100f;
+		public static float paraglidingMinAltAGL = 1500f;
+
 		bool highGee = false;
 
 		public static EventVoid selfieListeners = new EventVoid("Selfie");
@@ -46,6 +56,52 @@ namespace KourageousTourists
 		public void Awake()
 		{
 			Log.dbg("entered KourageousTourists Awake scene:{0}", HighLogic.LoadedScene);
+
+			bool forceTouristsInSandbox = false;
+
+			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
+
+			if (config == null)
+			{
+				Log.detail("No config nodes!");
+				return;
+			}
+			String debugState = config.GetValue("debug");
+			String noDiving = config.GetValue("noSkyDiving");
+			String forceInSandbox = config.GetValue("forceTouristsInSandbox");
+
+			try
+			{
+				paraglidingChutePitch = float.Parse(config.GetValue("paraglidingChutePitch"));
+				paraglidingDeployDelay = float.Parse(config.GetValue("paraglidingDeployDelay"));
+				paraglidingMaxAirspeed = float.Parse(config.GetValue("paraglidingMaxAirpseed"));
+				paraglidingMinAltAGL = float.Parse(config.GetValue("paraglidingMinAltAGL"));
+				Log.detail("paragliding params: pitch: {0}, delay: {1}, speed: {2}, alt: {3}", paraglidingChutePitch, paraglidingDeployDelay, paraglidingMaxAirspeed, paraglidingMinAltAGL);
+			}
+			catch (Exception) {
+				Log.detail("Failed parsing paragliding tweaks!");
+			}
+
+			Log.detail("debug: {0}; nodiving: {1}; forceInSB: {2}", debugState, noDiving, forceInSandbox);
+
+			debug = debugState != null &&
+			        (debugState.ToLower().Equals ("true") || debugState.Equals ("1"));
+			noSkyDiving = noDiving != null &&
+			        (noDiving.ToLower().Equals ("true") || noDiving.Equals ("1"));
+			forceTouristsInSandbox = forceInSandbox != null &&
+			              (forceInSandbox.ToLower().Equals ("true") || forceInSandbox.Equals ("1"));
+
+			Log.detail("debug: {0}; nodiving: {1}; forceInSB: {2}", debug, noSkyDiving, forceTouristsInSandbox);
+			Log.detail("highlogic: {0}", HighLogic.fetch);
+			Log.detail("game: {0}", HighLogic.CurrentGame);
+
+			// Ignore non-career game mode
+			if (HighLogic.CurrentGame == null ||
+			    (!forceTouristsInSandbox && HighLogic.CurrentGame.Mode != Game.Modes.CAREER))
+			{
+				return;
+			}
+			Log.detail("scene: {0}", HighLogic.LoadedScene);
 
 			GameEvents.OnVesselRecoveryRequested.Add (OnVesselRecoveryRequested);
 
@@ -120,7 +176,7 @@ namespace KourageousTourists
 		}
 
 		private void OnEvaStart(GameEvents.FromToAction<Part, Part> evaData) {
-			
+
 			Log.dbg("entered; KourageousTourists OnEvaStart Parts: {0}; {1}; active vessel: {2}", evaData.from, evaData.to, FlightGlobals.ActiveVessel);
 			Vessel v = evaData.to.vessel;
 			if (!v || !v.evaController)
@@ -156,10 +212,38 @@ namespace KourageousTourists
 			evaData.to.RequestResource (v.evaController.propellantResourceName, v.evaController.propellantResourceDefaultAmount);
 			// Set propellantResourceDefaultAmount to 0 for EVAFuel to recognize it.
 			v.evaController.propellantResourceDefaultAmount = 0.0;
-			
+
 			ScreenMessages.PostScreenMessage (String.Format(
-				"<color=orange>Jetpack propellant drained as tourists of level {0} are not allowed to use it</color>", 
+				"<color=orange>Jetpack propellant drained as tourists of level {0} are not allowed to use it</color>",
 				t.level));
+
+			// SkyDiving...
+			print(String.Format("skydiving: {0}, situation: {1}", t.looksLikeSkydiving(v), v.situation));
+			if (t.looksLikeSkydiving(v)) {
+				v.evaController.ladderPushoffForce = 50;
+				v.evaController.autoGrabLadderOnStart = false;
+				StartCoroutine (this.deployChute (v));
+			}
+		}
+
+		public IEnumerator deployChute(Vessel v) {
+			Log.detail("Priming chute");
+			if (!v.evaController.part.Modules.Contains ("ModuleEvaChute")) {
+				Log.detail("No ModuleEvaChute!!! Oops...");
+				yield  break;
+			}
+			Log.detail("checking chute module...");
+			ModuleEvaChute chuteModule = (ModuleEvaChute)v.evaController.part.Modules ["ModuleEvaChute"];
+			Log.detail("deployment state: {0}; enabled: {1}", chuteModule.deploymentSafeState, chuteModule.enabled);
+			chuteModule.deploymentSafeState = ModuleParachute.deploymentSafeStates.UNSAFE; // FIXME: is it immediate???
+
+			Log.detail("counting {0} sec...", paraglidingDeployDelay);
+			yield return new WaitForSeconds (paraglidingDeployDelay); // 5 seconds to deploy chute. TODO: Make configurable
+			Log.detail("Deploying chute");
+			chuteModule.Deploy ();
+
+			// Set low forward pitch so uncontrolled kerbal doesn't gain lot of speed
+			chuteModule.chuteDefaultForwardPitch = paraglidingChutePitch;
 		}
 
 		private void OnAttemptEVA(ProtoCrewMember crewMemeber, Part part, Transform transform) {
@@ -193,7 +277,7 @@ namespace KourageousTourists
 		{
 			if (vessel == null)
 				return;
-			
+
 			Log.dbg("OnVesselCreate name=" + vessel.GetName ());
 
 			reinitVessel (vessel);
@@ -226,19 +310,19 @@ namespace KourageousTourists
 		}
 
 		private void OnKerbalLevelUp(ProtoCrewMember kerbal) {
-		
+
 			if (tourists == null || !tourists.ContainsKey (kerbal.name))
 				return;
-			Log.dbg("Leveling up {0}", kerbal.name); 
+			Log.dbg("Leveling up {0}", kerbal.name);
 			// Re-create tourist
 			tourists[kerbal.name] = factory.createForLevel (kerbal.experienceLevel, kerbal);
 		}
 
 		private void checkApproachingGeeLimit() {
-			
-			if (FlightGlobals.ActiveVessel != null && 
+
+			if (FlightGlobals.ActiveVessel != null &&
 					FlightGlobals.ActiveVessel.geeForce < 4.0) {// Can there be any tourist with Gee force tolerance below that?
-			
+
 				if (highGee) {
 					reinitVessel (FlightGlobals.ActiveVessel);
 					highGee = false;
@@ -249,10 +333,13 @@ namespace KourageousTourists
 			if (tourists == null)
 				return;
 			foreach (ProtoCrewMember crew in FlightGlobals.ActiveVessel.GetVesselCrew()) {
-				if (!tourists.ContainsKey (crew.name) || 			// not among tourists
-					!Tourist.isTourist(crew) || 					// not really a tourist
-					crew.type != ProtoCrewMember.KerbalType.Crew)   // was probably unpromoted
-						continue;
+				if (!tourists.ContainsKey(crew.name) || // not among tourists
+				    !Tourist.isTourist(crew) || // not really a tourist
+				    crew.type != ProtoCrewMember.KerbalType.Crew)
+				{
+					// was probably unpromoted
+					continue;
+				}
 
 				if (crew.gExperienced / ProtoCrewMember.GToleranceMult(crew) > 50000) { // Magic number. At 60000 kerbal passes out
 					Log.warn("Unpromoting {0} due to high gee", crew.name);
@@ -379,14 +466,14 @@ namespace KourageousTourists
 			OnVesselCreate(vessel);
 		}
 
-		private void OnFlightReady() 
+		private void OnFlightReady()
 		{
 			Log.dbg("entered OnFlightReady");
 			foreach (Vessel v in FlightGlobals.VesselsLoaded)
 				reinitVessel (v);
 		}
 
-		private void OnVesselRecoveryRequested(Vessel vessel) 
+		private void OnVesselRecoveryRequested(Vessel vessel)
 		{
 			Log.dbg("entered; vessel: {0}", vessel.name );
 			// Switch tourists back to tourists
@@ -420,7 +507,7 @@ namespace KourageousTourists
 
 			if (!smile)
 				return;
-			
+
 			int sec = (DateTime.Now - selfieTime).Seconds;
 			if (!taken && 0 == sec)
 			{
@@ -490,7 +577,7 @@ namespace KourageousTourists
 
 				if (v.evaController == null)
 					continue;
-				
+
 				KerbalEVA eva = v.evaController;
 				kerbalExpressionSystem expression = getOrCreateExpressionSystem (eva);
 
@@ -499,7 +586,7 @@ namespace KourageousTourists
 					Tourist t;
 					if (!tourists.TryGetValue (v.GetVesselCrew()[0].name, out t))
 						continue;
-					
+
 					expression.wheeLevel = t.whee;
 					expression.fearFactor = t.fear;
 
@@ -563,7 +650,7 @@ namespace KourageousTourists
 				var props = t.GetProperties();
 				if (props == null)
 					return "type: " + t.ToString () + "; props=null";
-				
+
 				foreach (var item in props)
 				{
 					sb.Append($"{item.Name}:{item.GetValue(obj,null)}; ");

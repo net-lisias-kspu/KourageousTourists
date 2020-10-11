@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Contracts;
+using System.Linq;
 using FinePrint.Contracts.Parameters;
 
-namespace KourageousTourists
+namespace KourageousTourists.Contracts
 {
 
 	public class KourageousAnomaly
@@ -41,7 +40,7 @@ namespace KourageousTourists
 
 			if (anomalies != null)
 				return;
-			
+
 			anomalies = new Dictionary<String, KourageousAnomaly> ();
 			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
 			if (config == null)
@@ -98,7 +97,7 @@ namespace KourageousTourists
 				Log.dbg("anomaly body obj: {0}", anomaly.body == null);
 				if (anomaly.body == null)
 					continue;
-				
+
 				String payoutModifierStr = node.GetValue ("payoutModifier");
 				Log.dbg("payout modifier str: {0}", payoutModifierStr);
 				if (payoutModifierStr == null)
@@ -116,7 +115,7 @@ namespace KourageousTourists
 				anomalies.Add (bodyStr + ":" + name, anomaly);
 				Log.dbg("added: {0}", bodyStr + ":" + name);
 			}
-			
+
 		}
 
 		protected KourageousAnomaly chooseAnomaly(CelestialBody body) {
@@ -151,7 +150,7 @@ namespace KourageousTourists
 			chosenAnomaly = chooseAnomaly (targetBody);
 			if (chosenAnomaly == null)
 				return false;
-			
+
 			this.numTourists = UnityEngine.Random.Range (2, 5);
 			Log.dbg("num tourists: {0}", numTourists);
 			for (int i = 0; i < this.numTourists; i++) {
@@ -201,9 +200,9 @@ namespace KourageousTourists
 			base.SetDeadlineYears (1, targetBody);
 			base.SetReputation (2, 5, targetBody);
 			base.SetFunds (
-				3000 * chosenAnomaly.payoutModifier, 
-				9000 * chosenAnomaly.payoutModifier, 
-				21000 * chosenAnomaly.payoutModifier, 
+				3000 * chosenAnomaly.payoutModifier,
+				9000 * chosenAnomaly.payoutModifier,
+				21000 * chosenAnomaly.payoutModifier,
 				targetBody);
 
 			return true;
@@ -219,7 +218,7 @@ namespace KourageousTourists
 
 
 		public override bool CanBeCancelled() {
-			// TODO: Let's make that if any tourist is out of Kerbin, 
+			// TODO: Let's make that if any tourist is out of Kerbin,
 			// the contract can't be cancelled
 			return true;
 		}
