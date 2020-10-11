@@ -59,11 +59,11 @@ namespace KourageousTourists
 
 			bool forceTouristsInSandbox = false;
 
-			ConfigNode config = GameDatabase.Instance.GetConfigNodes(KourageousTouristsAddOn.cfgRoot).FirstOrDefault();
+			ConfigNode config = Settings.Read();
 
 			if (config == null)
 			{
-				Log.detail("No config nodes!");
+				Log.warn("No config nodes!");
 				return;
 			}
 			String debugState = config.GetValue("debug");

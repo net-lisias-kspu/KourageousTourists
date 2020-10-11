@@ -51,6 +51,7 @@
     </Compile>
     <Compile Include="Log.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
