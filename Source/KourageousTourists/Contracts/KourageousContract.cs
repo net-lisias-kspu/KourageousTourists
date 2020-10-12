@@ -79,7 +79,7 @@ namespace KourageousTourists
 		{
 			Log.detail("OnCompleted");
 
-			foreach (var tourist in tourists)
+			foreach (ProtoCrewMember tourist in tourists)
 			{
 				Log.detail("Setting hasToured for {0}", tourist.name);
 				KerbalRoster roster = HighLogic.CurrentGame.CrewRoster;
@@ -96,7 +96,7 @@ namespace KourageousTourists
 		protected override void OnLoad (ConfigNode node)
 		{
 			int bodyID = int.Parse(node.GetValue ("targetBody"));
-			foreach(var body in FlightGlobals.Bodies)
+			foreach(CelestialBody body in FlightGlobals.Bodies)
 			{
 				if (body.flightGlobalsIndex == bodyID)
 					targetBody = body;
@@ -137,7 +137,7 @@ namespace KourageousTourists
 		protected static string tokenize(params Object[] args) {
 			string result = "";
 			int token = 0;
-			foreach (var p in args) {
+			foreach (Object p in args) {
 				if (result.Length == 0) {
 					result = p.ToString();
 					continue;

@@ -631,12 +631,12 @@ namespace KourageousTourists
 				return "null";
 			StringBuilder sb = new StringBuilder();
 			try {
-				var t = typeof(T);
-				var props = t.GetProperties();
+				Type t = typeof(T);
+				System.Reflection.PropertyInfo[] props = t.GetProperties();
 				if (props == null)
 					return "type: " + t.ToString () + "; props=null";
 
-				foreach (var item in props)
+				foreach (System.Reflection.PropertyInfo item in props)
 				{
 					sb.Append($"{item.Name}:{item.GetValue(obj,null)}; ");
 				}
@@ -665,13 +665,13 @@ namespace KourageousTourists
 				ProtoCrewMember protoCrew = FlightGlobals.ActiveVessel.GetVesselCrew () [0];
 				//printDebug ("proto crew: " + protoCrew);
 
-				//var prefabExpr = prefabEva.GetComponent<kerbalExpressionSystem> ();
+				//kerbalExpressionSystem prefabExpr = prefabEva.GetComponent<kerbalExpressionSystem> ();
 
 				Animator a = p.part.GetComponent<Animator> ();
 				if (a == null) {
 					Log.dbg("Creating Animator...");
-					var prefabAnim = prefabEvaPart.GetComponent<Animator> ();
 					//printDebug ("animator prefab: " + dumper(prefabAnim));
+					Animator prefabAnim = prefabEvaPart.GetComponent<Animator> ();
 					a = p.part.gameObject.AddComponent<Animator> ();
 					//printDebug ("animator component: " + dumper(a));
 

@@ -21,7 +21,7 @@ namespace KourageousTourists.Contracts
 		protected override void OnLoad (ConfigNode node)
 		{
 			int bodyID = int.Parse(node.GetValue ("targetBody"));
-			foreach (var body in FlightGlobals.Bodies)
+			foreach (CelestialBody body in FlightGlobals.Bodies)
 				if (body.flightGlobalsIndex == bodyID) {
 					targetBody = body;
 					break;

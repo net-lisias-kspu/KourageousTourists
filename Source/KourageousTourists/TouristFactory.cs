@@ -52,7 +52,7 @@ namespace KourageousTourists
 			}
 			foreach (Contract c in ContractSystem.Instance.Contracts)
 			{
-				var contract = c as KourageousSkydiveContract;
+				KourageousSkydiveContract contract = c as KourageousSkydiveContract;
 				if (contract != null) {
 					if (contract.hasTourist (crew.name)) {
 						return true;
