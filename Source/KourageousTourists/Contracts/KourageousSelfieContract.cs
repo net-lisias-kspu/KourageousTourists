@@ -1,4 +1,5 @@
 ﻿using System;
+
 using FinePrint.Contracts.Parameters;
 
 namespace KourageousTourists.Contracts

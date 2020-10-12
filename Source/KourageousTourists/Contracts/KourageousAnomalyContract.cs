@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using FinePrint.Contracts.Parameters;
 
 namespace KourageousTourists.Contracts
