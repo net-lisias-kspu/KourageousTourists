@@ -267,11 +267,6 @@ namespace KourageousTourists
 
 			reinitVessel (vessel);
 			reinitEvents (vessel);
-
-			if (vessel.evaController == null)
-				return;
-			if (!Tourist.isTourist (vessel.GetVesselCrew () [0]))
-				return;
 		}
 
 		private void OnVesselWillDestroy(Vessel vessel) {
@@ -370,7 +365,14 @@ namespace KourageousTourists
 				return;
 			KerbalEVA evaCtl = v.evaController;
 
-			ProtoCrewMember crew = v.GetVesselCrew () [0];
+			List<ProtoCrewMember> roster = v.GetVesselCrew ();
+			if (0 == roster.Count)
+			{
+				Log.dbg("Whatahell? Where are the crew for this vessel?");
+				return; // empty vessel. This happened on KSP 1.4.1, probably on 1.4.0 too - not sure until what KSP this will be needed.
+			}
+
+			ProtoCrewMember crew = roster[0];
 			String kerbalName = crew.name;
 			Log.dbg("evCtl found; checking name: {0}", kerbalName);
 			Tourist t;
