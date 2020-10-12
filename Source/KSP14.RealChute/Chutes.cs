@@ -12,6 +12,11 @@ namespace KourageousTourists.KSP14.RealChute
 	{
 		public Chutes(){}
 
+		public bool hasChute(Vessel v)
+		{
+			return false; // TODO Implement this for Real Chute!!
+		}
+
 		public IEnumerator deployChute(Vessel v, float paraglidingDeployDelay, float paraglidingChutePitch) {
 			Log.detail("Priming chute - KSP14.RealChute");
 			if (!v.evaController.part.Modules.Contains ("RealChuteModule")) {

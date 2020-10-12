@@ -10,11 +10,16 @@ namespace KourageousTourists.KSP14
 	{
 		public Chutes(){}
 
+		public bool hasChute(Vessel v)
+		{
+			return v.evaController.part.Modules.Contains("ModuleEvaChute");
+		}
+
 		public IEnumerator deployChute(Vessel v, float paraglidingDeployDelay, float paraglidingChutePitch) {
 			Log.detail("Priming chute - KSP14");
-			if (!v.evaController.part.Modules.Contains ("ModuleEvaChute")) {
+			if (!hasChute(v)) {
 				Log.detail("No ModuleEvaChute!!! Oops...");
-				yield  break;
+				yield break;
 			}
 			Log.detail("checking chute module...");
 			ModuleEvaChute chuteModule = (ModuleEvaChute)v.evaController.part.Modules ["ModuleEvaChute"];

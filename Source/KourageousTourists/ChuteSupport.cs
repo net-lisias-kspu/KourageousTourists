@@ -6,6 +6,7 @@ namespace KourageousTourists
 	{
 		public interface Interface
 		{
+			bool hasChute(Vessel v);
 			IEnumerator deployChute(Vessel v, float paraglidingDeployDelay, float paraglidingChutePitch);
 		}
 

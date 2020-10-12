@@ -138,9 +138,9 @@ namespace KourageousTourists
 			// Speed below 100 m/s
 
 
-			// if (this.level < 1) {
-			// 	return new EVAAttempt ("This tourist is not trained for skydiving!", false);
-			// }
+			if (!hasAbility("SkyDive")) {
+			 	return new EVAAttempt ("This tourist is not trained for skydiving!", false);
+			}
 			bool srfSpeedOk = Math.Abs (v.srfSpeed) < KourageousTouristsAddOn.paraglidingMaxAirspeed;
 			bool altOk = v.radarAltitude > KourageousTouristsAddOn.paraglidingMinAltAGL;
 

@@ -205,29 +205,48 @@ namespace KourageousTourists
 				return;
 			}
 
-			if (t.hasAbility ("Jetpack"))
-				return;
-
-			evaData.to.RequestResource (v.evaController.propellantResourceName, v.evaController.propellantResourceDefaultAmount);
-			// Set propellantResourceDefaultAmount to 0 for EVAFuel to recognize it.
-			v.evaController.propellantResourceDefaultAmount = 0.0;
-
-			ScreenMessages.PostScreenMessage (String.Format(
-				"<color=orange>Jetpack propellant drained as tourists of level {0} are not allowed to use it</color>",
-				t.level));
+			if (!t.hasAbility ("Jetpack"))
+			{
+				evaData.to.RequestResource (v.evaController.propellantResourceName, v.evaController.propellantResourceDefaultAmount);
+				// Set propellantResourceDefaultAmount to 0 for EVAFuel to recognize it.
+				v.evaController.propellantResourceDefaultAmount = 0.0;
+			}
 
 			// SkyDiving...
-			Log.info("skydiving: {0}, situation: {1}", t.looksLikeSkydiving(v), v.situation);
 			if (t.looksLikeSkydiving(v)) {
+				Log.info("skydiving: {0}, situation: {1}", t.looksLikeSkydiving(v), v.situation);
 				v.evaController.ladderPushoffForce = 50;
 				v.evaController.autoGrabLadderOnStart = false;
 				StartCoroutine (this.deployChute (v));
+				return;
 			}
+
+			if (0f == v.evaController.propellantResourceDefaultAmount)
+				ScreenMessages.PostScreenMessage (String.Format(
+					"<color=orange>Jetpack propellant drained as tourists of level {0} are not allowed to use it</color>",
+					t.level));
 		}
 
 		public IEnumerator deployChute(Vessel v) {
 			Log.detail("Priming chute");
-			return ChuteSupport.INSTANCE.deployChute(v, paraglidingDeployDelay, paraglidingChutePitch);
+
+			if (ChuteSupport.INSTANCE.hasChute(v))
+				yield return ChuteSupport.INSTANCE.deployChute(v, paraglidingDeployDelay, paraglidingChutePitch);
+			else
+			{
+				ScreenMessages.PostScreenMessage ("<color=orange>I think I'm missing something...</color>");
+				for (int i = 60; i > 0; --i) yield return null;
+				ScreenMessages.PostScreenMessage ("<color=orange>No, really, there's something missing here...</color>");
+				for (int i = 90; i > 0; --i) yield return null;
+				ScreenMessages.PostScreenMessage ("<color=red>Wait!!!</color>");
+				for (int i = 30; i > 0; --i) yield return null;
+				ScreenMessages.PostScreenMessage ("<color=red>WHERE</color>");
+				for (int i = 30; i > 0; --i) yield return null;
+				ScreenMessages.PostScreenMessage ("<color=red>IS</color>");
+				for (int i = 30; i > 0; --i) yield return null;
+				ScreenMessages.PostScreenMessage ("<color=red>MY PARACHUTES???</color>");
+			}
+			yield break;
 		}
 
 		private void OnAttemptEVA(ProtoCrewMember crewMemeber, Part part, Transform transform) {
