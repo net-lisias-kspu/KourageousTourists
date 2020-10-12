@@ -1,5 +1,10 @@
 # Kourageous Tourists :: Change Log
 
+* 2020-0530: 0.5.2 (whale_2) for KSP 1.9.1
+	+ This release fixes some minor bugs, but also makes sky diving contracts unlock only after you've buzzed the tower.
+	+ Added two config options:
+	+ noSkyDiving - to completely disable skydiving contracts
+	+ forceTouristsInSandbox - for enabling the mod in sandbox mode (normally disabled)
 * 2020-0528: 0.5.1 (whale_2) for KSP 1.9.1
 	+ Fix stupid bug when everyone has left the vessel and contract conditions should be checked.
 * 2020-0524: 0.5.0 (whale_2) for KSP 1.9.1
