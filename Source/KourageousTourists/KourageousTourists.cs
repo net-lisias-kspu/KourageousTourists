@@ -193,7 +193,7 @@ namespace KourageousTourists
 			foreach(KeyValuePair<String, Tourist> pair in this.tourists)
 				Log.dbg("{0}={1}", pair.Key, pair.Value);
 #endif
-			Log.dbg("roster: {0}", this.tourists);
+			Log.dbg("roster: {0}", this.tourists.Keys);
 			Tourist t;
 			if (!tourists.TryGetValue(crew.name, out t))
 				return;
@@ -218,7 +218,7 @@ namespace KourageousTourists
 				t.level));
 
 			// SkyDiving...
-			print(String.Format("skydiving: {0}, situation: {1}", t.looksLikeSkydiving(v), v.situation));
+			Log.info("skydiving: {0}, situation: {1}", t.looksLikeSkydiving(v), v.situation);
 			if (t.looksLikeSkydiving(v)) {
 				v.evaController.ladderPushoffForce = 50;
 				v.evaController.autoGrabLadderOnStart = false;
@@ -360,7 +360,7 @@ namespace KourageousTourists
 		}
 
 		private void reinitEvents(Vessel v) {
-			Log.dbg("entered reinitEvents");
+			Log.dbg("entered reinitEvents for {0}", v);
 			if (v.evaController == null)
 				return;
 			KerbalEVA evaCtl = v.evaController;
@@ -629,6 +629,7 @@ namespace KourageousTourists
 		}
 
 		private String dumper<T>(T obj) {
+#if DEBUG
 			if (obj == null)
 				return "null";
 			StringBuilder sb = new StringBuilder();
@@ -648,34 +649,37 @@ namespace KourageousTourists
 				sb.Append ("Exception while trying to dump object: " + e.ToString ());
 			}
 			return sb.ToString ();
+#else
+			return "";
+#endif
 		}
 
 		private kerbalExpressionSystem getOrCreateExpressionSystem(KerbalEVA p) {
 
 			kerbalExpressionSystem e = p.part.GetComponent<kerbalExpressionSystem>();
-			/*printDebug ("expr. system: " + dumper(e));
-			printDebug ("kerbalEVA: " + dumper(p));
-			printDebug ("part: " + dumper(p.part));*/
+			Log.dbg("expr. system: {0}", dumper(e));
+			Log.dbg("kerbalEVA: {0}", dumper(p));
+			Log.dbg("part: {0}", dumper(p.part));
 
 			if (e == null) {
 
 				AvailablePart evaPrefab = PartLoader.getPartInfoByName ("kerbalEVA");
-				//printDebug ("eva prefab: " + dumper (evaPrefab));
+				Log.dbg("eva prefab: {0}", dumper(evaPrefab));
 				Part prefabEvaPart = evaPrefab.partPrefab;
-				//printDebug ("eva prefab part: " + prefabEvaPart);
+				Log.dbg("eva prefab part: {0}", prefabEvaPart);
 
 				ProtoCrewMember protoCrew = FlightGlobals.ActiveVessel.GetVesselCrew () [0];
-				//printDebug ("proto crew: " + protoCrew);
+				Log.dbg("proto crew: {0}", protoCrew);
 
 				//kerbalExpressionSystem prefabExpr = prefabEva.GetComponent<kerbalExpressionSystem> ();
 
 				Animator a = p.part.GetComponent<Animator> ();
 				if (a == null) {
 					Log.dbg("Creating Animator...");
-					//printDebug ("animator prefab: " + dumper(prefabAnim));
 					Animator prefabAnim = prefabEvaPart.GetComponent<Animator> ();
+					Log.dbg("animator prefab: {0}", dumper(prefabAnim));
 					a = p.part.gameObject.AddComponent<Animator> ();
-					//printDebug ("animator component: " + dumper(a));
+					Log.dbg("animator component: {0}", dumper(a));
 
 					a.avatar = prefabAnim.avatar;
 					a.runtimeAnimatorController = prefabAnim.runtimeAnimatorController;
@@ -693,7 +697,7 @@ namespace KourageousTourists
 				e.evaPart = p.part;
 				e.animator = a;
 				e.protoCrewMember = protoCrew;
-				//printDebug ("expression component: " + dumper (e));
+				Log.dbg("expression component: {0}", dumper(e));
 			}
 			return e;
 		}

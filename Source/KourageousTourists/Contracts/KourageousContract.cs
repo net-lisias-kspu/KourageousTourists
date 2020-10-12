@@ -119,18 +119,18 @@ namespace KourageousTourists
 
 		protected override void OnSave (ConfigNode node)
 		{
-			//KourageousTouristsAddOn.printDebug ("saving " + this.numTourists + "tourists");
-			//KourageousTouristsAddOn.printDebug ("node: " + node.ToString());
+			Log.dbg("saving {0} tourists", this.numTourists);
+			Log.dbg("node: {0}", node);
 			int bodyID = targetBody.flightGlobalsIndex;
 			node.AddValue ("targetBody", bodyID);
 			ConfigNode touristNode = node.AddNode ("TOURISTS");
 			foreach (ProtoCrewMember tourist in this.tourists) {
 				ConfigNode crewNode = touristNode.AddNode ("TOURIST");
 				tourist.Save (crewNode);
-				//KourageousTouristsAddOn.printDebug ("adding tourist: " + tourist.name);
+				Log.dbg("adding tourist: {0}", tourist.name);
 			}
-			//KourageousTouristsAddOn.printDebug ("node: " + node.ToString());
-			//KourageousTouristsAddOn.printDebug ("tourist node: " + touristNode.ToString());
+			Log.dbg("node: {0}", node);
+			Log.dbg("tourist node: {0}", touristNode);
 			
 		}
 
