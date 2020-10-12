@@ -1,5 +1,15 @@
 # Kourageous Tourists :: Change Log
 
+* 2020-0530: 0.5.2 (whale_2) for KSP 1.9.1
+	+ This release fixes some minor bugs, but also makes sky diving contracts unlock only after you've buzzed the tower.
+	+ Added two config options:
+	+ noSkyDiving - to completely disable skydiving contracts
+	+ forceTouristsInSandbox - for enabling the mod in sandbox mode (normally disabled)
+* 2020-0528: 0.5.1 (whale_2) for KSP 1.9.1
+	+ Fix stupid bug when everyone has left the vessel and contract conditions should be checked.
+* 2020-0524: 0.5.0 (whale_2) for KSP 1.9.1
+	+ Update for latest KSP and SkyDiving contracts!
+	+ That's it - the mod is updated for recent KSP versions (1.7 - 1.9) and now you can enjoy throwing kerbals out of your aircraft or helicopter or even a rocket. Parachute will be deployed automatically. However, you should keep them in the vicinity, otherwise the game won't let them land safely.
 * 2020-0116: 0.4.1.1 (Lisias) for KSP >= 1.4
 	+ Replicating [fix](https://github.com/whale2/KourageousTourists/pull/2) from [takoss](https://github.com/takoss)
 		- Just found it after fixing it myself, but that guy detected and fixed it before me, so I think he deserved be mentioned! :)
