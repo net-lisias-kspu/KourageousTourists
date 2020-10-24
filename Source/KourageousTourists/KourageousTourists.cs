@@ -389,13 +389,14 @@ namespace KourageousTourists
 			List<ProtoCrewMember> roster = v.GetVesselCrew ();
 			if (0 == roster.Count)
 			{
-				Log.dbg("Whatahell? Where are the crew for this vessel?");
-				return; // empty vessel. This happened on KSP 1.4.1, probably on 1.4.0 too - not sure until what KSP this will be needed.
+				Log.dbg("Vessel has no crew.");
+				return;
 			}
 
 			ProtoCrewMember crew = roster[0];
 			String kerbalName = crew.name;
 			Log.dbg("evCtl found; checking name: {0}", kerbalName);
+
 			Tourist t;
 			if (!tourists.TryGetValue(kerbalName, out t))
 				return;
@@ -404,7 +405,7 @@ namespace KourageousTourists
 			t.smile = false;
 			t.taken = false;
 
-			if (!Tourist.isTourist(v.GetVesselCrew()[0])) {
+			if (!Tourist.isTourist(crew)) {
 				Log.dbg("...but is a crew, not a tourist!");
 				return; // not a real tourist
 			}
