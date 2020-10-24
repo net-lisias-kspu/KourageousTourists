@@ -5,7 +5,5 @@
 	+ A more or less workaround is to take two or tree selfies in sequence, seizing the late emotions from the last ones.
 	+ Recovering the Tourists doesn't improves the timing, but changing scenario and coming back after some recoverings changes the timings.
 		- Should be the same problem. 
-* Only the last Tourist to had gone EVA is able to take Selfies.
-	+ I **think** that any Tourist could take Selfies last time I played on KSP 1.4, but I need to check this.
-	+ EDIT: Changing scenarios kinda "fix" the issue, being me the perpetrator or not, now I know where to look.
-
+* Only the last Tourist to had gone EVA is able to take Selfies on some undetermined conditions (probably related to an older KSP version)
+	+ EDIT: Changing scenarios kinda "fix" the issue
