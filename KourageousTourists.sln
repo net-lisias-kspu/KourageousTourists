@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KourageousTourists", "Source\KourageousTourists\KourageousTourists.csproj", "{03463453-AC0F-435A-8BC7-55FCCCF8F832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP14", "Source\KSP14\KSP14.csproj", "{A6F4C3B2-BEB3-4FB3-9C25-968881057D40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP.Chute.14", "Source\KSP.Chute.14\KSP.Chute.14.csproj", "{A6F4C3B2-BEB3-4FB3-9C25-968881057D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP13.RealChute", "Source\KSP13.RealChute\KSP13.RealChute.csproj", "{FC2C721C-C459-4A66-8030-086271E23981}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP.Chute.13.RealChute", "Source\KSP.Chute.13.RealChute\KSP.Chute.13.RealChute.csproj", "{FC2C721C-C459-4A66-8030-086271E23981}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP14.RealChute", "Source\KSP14.RealChute\KSP14.RealChute.csproj", "{FE9896A9-356A-4615-8AB9-B029905B9D67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSP.Chute.14.RealChute", "Source\KSP.Chute.14.RealChute\KSP.Chute.14.RealChute.csproj", "{FE9896A9-356A-4615-8AB9-B029905B9D67}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support", "Support", "{546FF1B4-7208-483E-BE1B-CF219DC058B5}"
 EndProject

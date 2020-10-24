@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A6F4C3B2-BEB3-4FB3-9C25-968881057D40}</ProjectGuid>
+    <ProjectGuid>{FE9896A9-356A-4615-8AB9-B029905B9D67}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>KourageousTourists.KSP14</RootNamespace>
-    <AssemblyName>KourageousTourists.KSP14</AssemblyName>
+    <RootNamespace>KourageousTourists.KSP.Chute.RealChute14</RootNamespace>
+    <AssemblyName>KourageousTourists.KSP.Chute.14.RealChute</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <BaseIntermediateOutputPath>..\..\obj</BaseIntermediateOutputPath>
   </PropertyGroup>
@@ -34,6 +34,9 @@
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\LIB\managed\1.4.0\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RealChute.131">
+      <HintPath>..\..\..\..\..\..\LIB\plugins\RealChute.131.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

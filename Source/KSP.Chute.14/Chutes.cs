@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Log = KourageousTourists.Log;
 
-namespace KourageousTourists.KSP14
+namespace KourageousTourists.KSP.Chute.Stock14
 {
 	public class Chutes : ChuteSupport.Interface
 	{

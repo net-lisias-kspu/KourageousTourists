@@ -18,9 +18,6 @@ namespace KourageousTourists
 				foreach(System.Type type in assembly.GetTypes())
 					foreach(System.Type ifc in type.GetInterfaces() )
 					{
-						#if DEBUG
-							UnityEngine.Debug.LogFormat("[KSP.UI] Checking {0} {1} {2}", assembly, type, ifc);
-						#endif
 						Log.dbg("Checking {0} {1} {2}", assembly, type, ifc);
 						if ("KourageousTourists.ChuteSupport+Interface" == ifc.ToString())
 						{
@@ -30,7 +27,7 @@ namespace KourageousTourists
 							return (Interface)r;
 						}
 					}
-			UnityEngine.Debug.LogWarning("No realisation for the abstract Interface found! We are doomed!");
+			Log.error("No realisation for the abstract Interface found! We are doomed!");
 			return (Interface) null;
 		}
 		static ChuteSupport()

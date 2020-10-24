@@ -6,7 +6,7 @@ using Log = KourageousTourists.Log;
 
 using RealChute;
 
-namespace KourageousTourists.KSP13.RealChute
+namespace KourageousTourists.KSP.Chute.RealChute13
 {
 	public class Chutes : ChuteSupport.Interface
 	{

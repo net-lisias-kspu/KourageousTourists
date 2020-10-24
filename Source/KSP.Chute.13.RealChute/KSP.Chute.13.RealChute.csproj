@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE9896A9-356A-4615-8AB9-B029905B9D67}</ProjectGuid>
+    <ProjectGuid>{FC2C721C-C459-4A66-8030-086271E23981}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>KSP14.RealChute</RootNamespace>
-    <AssemblyName>KourageousTourists.KSP14.RealChute</AssemblyName>
+    <RootNamespace>KourageousTourists.KSP.Chute.RealChute13</RootNamespace>
+    <AssemblyName>KourageousTourists.KSP.Chute.13.RealChute</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <BaseIntermediateOutputPath>..\..\obj</BaseIntermediateOutputPath>
   </PropertyGroup>
@@ -30,13 +30,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\LIB\managed\1.4.0\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\LIB\managed\1.4.0\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LIB\managed\1.3.0\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="RealChute.131">
       <HintPath>..\..\..\..\..\..\LIB\plugins\RealChute.131.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\LIB\managed\1.3.0\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

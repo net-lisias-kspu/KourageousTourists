@@ -45,10 +45,10 @@ namespace KourageousTourists
 		}
 
 		public static bool isSkyDiver(ProtoCrewMember crew) {
-			// Check if this kerbal is participating in any skydiving contract
 			if (Game.Modes.SANDBOX == HighLogic.CurrentGame.Mode) // In Sandbox, every Tourist is a skydiver!
 				return true;
 
+			// Check if this kerbal is participating in any skydiving contract
 			if (Game.Modes.CAREER != HighLogic.CurrentGame.Mode)
 				return false;
 
