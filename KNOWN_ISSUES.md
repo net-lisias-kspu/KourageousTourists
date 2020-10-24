@@ -8,8 +8,4 @@
 * Only the last Tourist to had gone EVA is able to take Selfies.
 	+ I **think** that any Tourist could take Selfies last time I played on KSP 1.4, but I need to check this.
 	+ EDIT: Changing scenarios kinda "fix" the issue, being me the perpetrator or not, now I know where to look.
-* Tourists cannot take off the Helmet for the selfies. :(
-	+ On KSP 1.4, KIS was the one allowing to tell Kerbals to take off the helmet, but nowadays with KSP doing the job itself, KISS doesn't anymore.
-	+ And KSP is not adding this option for Tourists.
-	+ Looking for a solution at the moment.
 

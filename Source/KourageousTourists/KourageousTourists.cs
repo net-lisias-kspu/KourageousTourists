@@ -377,6 +377,10 @@ namespace KourageousTourists
 			}
 		}
 
+		private static readonly HashSet<string> EVENT_WHITELIST = new HashSet<string>() {
+			"Remove Helmet", "Remove Neck Ring",
+			"Equip Helmet", "Equip Neck Ring"
+		};
 		private void reinitEvents(Vessel v) {
 			Log.dbg("entered reinitEvents for {0}", v);
 			if (v.evaController == null)
@@ -411,41 +415,50 @@ namespace KourageousTourists
 
 			BaseEventList pEvents = evaCtl.Events;
 			foreach (BaseEvent e in pEvents) {
-				Log.dbg("disabling event {0}", e.guiName);
+				if (EVENT_WHITELIST.Contains(e.guiName)) continue;
+				Log.dbg("disabling event {0} {1}", e.guiName);
 				e.guiActive = false;
 				e.guiActiveUnfocused = false;
 				e.guiActiveUncommand = false;
 			}
+
 			// Adding Selfie button
-			BaseEventDelegate slf = new BaseEventDelegate(TakeSelfie);
-			KSPEvent evt = new KSPEvent ();
-			evt.active = true;
-			evt.externalToEVAOnly = true;
-			evt.guiActive = true;
-			evt.guiActiveEditor = false;
-			evt.guiActiveUnfocused = false;
-			evt.guiActiveUncommand = false;
-			evt.guiName = "Take Selfie";
-			evt.name = "TakeSelfie";
-			BaseEvent selfie = new BaseEvent(pEvents, "Take Selfie", slf, evt);
-			pEvents.Add (selfie);
-			selfie.guiActive = true;
-			selfie.active = true;
+			{
+				BaseEventDelegate slf = new BaseEventDelegate(TakeSelfie);
+				KSPEvent evt = new KSPEvent
+				{
+					active = true,
+					externalToEVAOnly = true,
+					guiActive = true,
+					guiActiveEditor = false,
+					guiActiveUnfocused = false,
+					guiActiveUncommand = false,
+					guiName = "Take Selfie",
+					name = "TakeSelfie"
+				};
+				BaseEvent selfie = new BaseEvent(pEvents, "Take Selfie", slf, evt);
+				pEvents.Add (selfie);
+				selfie.guiActive = true;
+				selfie.active = true;
+			}
 
 			foreach (PartModule m in evaCtl.part.Modules) {
-
 				if (!m.ClassName.Equals ("ModuleScienceExperiment"))
 					continue;
 				Log.dbg("science module id: {0}", ((ModuleScienceExperiment)m).experimentID);
 				// Disable all science
 				foreach (BaseEvent e in m.Events) {
+					Log.dbg("disabling event {0}", e.guiName);
 					e.guiActive = false;
 					e.guiActiveUnfocused = false;
 					e.guiActiveUncommand = false;
 				}
 
 				foreach (BaseAction a in m.Actions)
+				{
+					Log.dbg("disabling action {0}", a.guiName);
 					a.active = false;
+				}
 			}
 
 			Log.dbg("Initializing sound");
