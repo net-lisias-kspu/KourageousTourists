@@ -123,6 +123,7 @@ namespace KourageousTourists
 			GameEvents.onNewVesselCreated.Add (OnNewVesselCreated);
 			GameEvents.onVesselCreate.Add (OnVesselCreate);
 			GameEvents.onVesselChange.Add (OnVesselChange);
+			GameEvents.onVesselLoaded.Add (OnVesselLoad);
 			GameEvents.onVesselWillDestroy.Add (OnVesselWillDestroy);
 			GameEvents.onCrewBoardVessel.Add (OnCrewBoardVessel);
 			GameEvents.onCrewOnEva.Add (OnEvaStart);
@@ -159,6 +160,7 @@ namespace KourageousTourists
 			GameEvents.onCrewOnEva.Remove(OnEvaStart);
 			GameEvents.onCrewBoardVessel.Remove(OnCrewBoardVessel);
 			GameEvents.onVesselWillDestroy.Remove(OnVesselWillDestroy);
+			GameEvents.onVesselLoaded.Add(OnVesselLoad);
 			GameEvents.onVesselChange.Remove(OnVesselChange);
 			GameEvents.onVesselCreate.Remove(OnVesselCreate);
 			GameEvents.onNewVesselCreated.Remove(OnNewVesselCreated);
@@ -469,7 +471,7 @@ namespace KourageousTourists
 
 		private void OnVesselGoOffRails(Vessel vessel)
 		{
-			Log.dbg("entered OnVesselGoOffRails");
+			Log.dbg("entered OnVesselGoOffRails={0}", vessel.name);
 
 			reinitVessel (vessel);
 			reinitEvents (vessel);
@@ -477,18 +479,43 @@ namespace KourageousTourists
 
 		private void OnVesselChange(Vessel vessel)
 		{
-			Log.dbg("entered OnVesselChange");
+			Log.dbg("entered OnVesselChange={0}", vessel.name);
 			if (vessel.evaController == null)
 				return;
 			// OnVesselChange called after OnVesselCreate, but with more things initialized
 			OnVesselCreate(vessel);
 		}
 
+		private void OnVesselLoad(Vessel vessel)
+		{
+			if (vessel == null) return;
+			Log.dbg("entered OnVesselLoad={0}", vessel.name);
+
+			// That's the problem - somewhere in the not so near past, KSP implemented a stunt called
+			// UpgradePipeline. This thing acts after the PartModule's OnLoad handler, and it injects
+			// back default values from prefab into the part on loading. This was intended to allow older
+			// savegames to be loaded on newer KSP (as it would inject default values on missing atributes
+			// present only on the new KSP version - or to reset new defaults when things changed internally),
+			// but also ended up trashing changes and atributes only available on runtime for some custom modules.
+
+			// The aftermath is that default (stock) KerbalEVA settings are always bluntly restored on load, and
+			// we need to reapply them again by brute force.
+
+			// Interesting enough, Kerbals on Seats are autonomous, runtime created Part attached to seat.
+
+			reinitVessel (vessel);
+			reinitEvents (vessel);
+
+		}
+
 		private void OnFlightReady()
 		{
 			Log.dbg("entered OnFlightReady");
 			foreach (Vessel v in FlightGlobals.VesselsLoaded)
-				reinitVessel (v);
+			{
+				reinitVessel(v);
+				reinitEvents(v);
+			}
 		}
 
 		private void OnVesselRecoveryRequested(Vessel vessel)
