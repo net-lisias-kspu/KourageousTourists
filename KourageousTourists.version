@@ -1,17 +1,17 @@
 {
 	"NAME"		: "Kouragerous Tourists /L Unofficial",
-	"URL"		: "https://raw.githubusercontent.com/net-lisias-kspu/KouragerousTourists/master/NavUtilities.version",
+	"URL"		: "https://raw.githubusercontent.com/net-lisias-kspu/KouragerousTourists/master/KourageousTourists.version",
 	"DOWNLOAD"	: "https://github.com/net-lisias-kspu/KouragerousTourists/releases",
 	"CHANGE_LOG"	: "https://raw.githubusercontent.com/net-lisias-kspu/KouragerousTourists/CHANGE_LOG.md",
 	"CHANGE_LOG_URL": "https://raw.githubusercontent.com/net-lisias-kspu/KouragerousTourists/CHANGES.md",
 	"VERSION":{
 		"MAJOR":0,
-		"MINOR":4,
-		"PATCH":1,
+		"MINOR":5,
+		"PATCH":2,
 		"BUILD":1
 		},
 	"KSP_VERSION_MIN":{
 		"MAJOR":1,
-		"MINOR":4
+		"MINOR":3
 		}
 }

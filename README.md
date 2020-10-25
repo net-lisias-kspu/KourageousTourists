@@ -43,6 +43,7 @@ This fork also **deviates from the upstream** as follows:
 * Level 5 tourists can sky dive even without a contract.
 * Level 1 tourists cannot EVA outside Kerbin, but can be assigned into External Command Seats (and similar parts) for guided tours on celestial bodies.
 * Level 0 tourists cannot EVA at all, but can also be toured using External Command Seats.
+* On all situations, Tourists can take selfies while seating on External Command Seats.
 * Tourists that can EVA are allowed to remove the Helmets (KIS needed for KSP \< 1.6).
 
 Jetpack fuel is drained if tourist level does not allows using it. Tourists still can not perform things like taking surface samples, collect experiment data or pilot ships, however they can carry stuff if KIS is installed and can take photos of themselves. All kerbals in the scene will notice that and express some emotions depending on their courage and stupidity levels. The photo could be found in standard screenshot directory and looks like Glerina Kerman-Mun-17-03-01-12:06:18.png, i.e. file name contains the name of the kerbal taking photo, planetary body and time when it was taken.  
