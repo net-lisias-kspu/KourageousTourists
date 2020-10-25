@@ -138,13 +138,15 @@ namespace KourageousTourists
 			// Switch tourists back
 			Log.dbg("entered OnDestroy");
 			try {
-				if (FlightGlobals.VesselsLoaded == null)
-					return;
+				if (null == FlightGlobals.VesselsLoaded) return;
 				Log.dbg("VesselsLoaded: {0}", FlightGlobals.VesselsLoaded);
 				foreach (Vessel v in FlightGlobals.VesselsLoaded) {
+					if (null == v) continue; // Weird behaviour on KSP 1.10?
 					Log.dbg("restoring vessel {0}", v.name);
-					List<ProtoCrewMember> crewList = v.GetVesselCrew ();
+					List<ProtoCrewMember> crewList = v.GetVesselCrew();
+					if (null == v.GetVesselCrew()) continue; // Weird behaviour on KSP 1.10?
 					foreach (ProtoCrewMember crew in crewList) {
+						if (null == crew) continue; // Weird behaviour on KSP 1.10?
 						Log.dbg("restoring crew={0}", crew.name);
 						if (Tourist.isTourist(crew))
 							crew.type = ProtoCrewMember.KerbalType.Tourist;
@@ -387,6 +389,7 @@ namespace KourageousTourists
 			if (v.evaController == null)
 				return;
 			KerbalEVA evaCtl = v.evaController;
+			if (null == evaCtl) return;
 
 			List<ProtoCrewMember> roster = v.GetVesselCrew ();
 			if (0 == roster.Count)
