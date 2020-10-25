@@ -594,8 +594,8 @@ namespace KourageousTourists
 		}
 
 		public void TakeSelfie() {
-
 			ScreenMessages.PostScreenMessage ("Selfie...!");
+			smile = true;
 			selfieTime = DateTime.Now;
 			foreach (Tourist t in tourists.Values)
 				t.generateEmotion ();
@@ -611,7 +611,6 @@ namespace KourageousTourists
 			camera.SetTargetNone ();*/
 
 			selfieListeners.Fire ();
-			smile = true;
 		}
 
 		private void Smile() {
