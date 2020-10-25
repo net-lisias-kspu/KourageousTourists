@@ -377,17 +377,22 @@ namespace KourageousTourists
 			}
 			Log.dbg("crew count: {0}", vessel.GetVesselCrew().Count);
 			if (vessel.isEVA) {
-				// ???
+				List<ProtoCrewMember> roster = vessel.GetVesselCrew ();
+				if (0 == roster.Count) return;
+				if (!tourists.TryGetValue(roster[0].name, out Tourist t)) return;
+				if (!Tourist.isTourist(roster[0])) return;
+				if (!t.hasAbility("EVA")) EVASupport.INSTANCE.equipHelmet(vessel);
 			}
 		}
 
-		private static readonly HashSet<string> EVENT_WHITELIST = new HashSet<string>() {
-			"ChangeHelmet", "ChangeNeckRing"
-		};
 		private void reinitEvents(Vessel v) {
-			Log.dbg("entered reinitEvents for {0}", v);
-			if (v.evaController == null)
-				return;
+			Log.dbg("entered reinitEvents for vessel {0}", v);
+			foreach (Part p in v.Parts)
+			{
+				if (!"kerbalEVA".Equals(p.name)) continue;
+				this.reinitEvents(p);
+			}
+
 			KerbalEVA evaCtl = v.evaController;
 			if (null == evaCtl) return;
 
@@ -402,9 +407,7 @@ namespace KourageousTourists
 			String kerbalName = crew.name;
 			Log.dbg("evCtl found; checking name: {0}", kerbalName);
 
-			Tourist t;
-			if (!tourists.TryGetValue(kerbalName, out t))
-				return;
+			if (!tourists.TryGetValue(kerbalName, out Tourist t)) return;
 
 			Log.dbg("among tourists: {0}", kerbalName);
 			t.smile = false;
@@ -418,17 +421,11 @@ namespace KourageousTourists
 			// Change crew type right away to avoid them being crew after recovery
 			crew.type = ProtoCrewMember.KerbalType.Tourist;
 
-			BaseEventList pEvents = evaCtl.Events;
-			foreach (BaseEvent e in pEvents) {
-				if (EVENT_WHITELIST.Contains(e.name)) continue;
-				Log.dbg("disabling event {0} -- {1}", e.name, e.guiName);
-				e.guiActive = false;
-				e.guiActiveUnfocused = false;
-				e.guiActiveUncommand = false;
-			}
+			EVASupport.INSTANCE.disableEvaEvents(v, t.hasAbility("EVA"));
 
 			// Adding Selfie button
 			{
+				BaseEventList pEvents = evaCtl.Events;
 				BaseEventDelegate slf = new BaseEventDelegate(TakeSelfie);
 				KSPEvent evt = new KSPEvent
 				{
@@ -447,29 +444,25 @@ namespace KourageousTourists
 				selfie.active = true;
 			}
 
-			foreach (PartModule m in evaCtl.part.Modules) {
-				if (!m.ClassName.Equals ("ModuleScienceExperiment"))
-					continue;
-				Log.dbg("science module id: {0}", ((ModuleScienceExperiment)m).experimentID);
-				// Disable all science
-				foreach (BaseEvent e in m.Events) {
-					Log.dbg("disabling event {0}", e.guiName);
-					e.guiActive = false;
-					e.guiActiveUnfocused = false;
-					e.guiActiveUncommand = false;
-				}
-
-				foreach (BaseAction a in m.Actions)
-				{
-					Log.dbg("disabling action {0}", a.guiName);
-					a.active = false;
-				}
-			}
-
 			Log.dbg("Initializing sound");
 			// Should we always invalidate cache???
 			fx = null;
 			getOrCreateAudio (evaCtl.part.gameObject);
+		}
+
+		private void reinitEvents(Part p) {
+			Log.dbg("entered reinitEvents for part {0}", p.name);
+			if (null == p.Modules) return;
+			if (null == p.protoModuleCrew || 0 == p.protoModuleCrew.Count) return;
+
+			foreach (ProtoCrewMember crew in p.protoModuleCrew)
+			{
+				String kerbalName = crew.name;
+				Log.dbg("found crew {0}", kerbalName);
+				if (!tourists.TryGetValue(kerbalName, out Tourist t)) continue;
+				Log.dbg("crew {0} {1}", kerbalName, t.abilities);
+				EVASupport.INSTANCE.disableEvaEvents(p, t.hasAbility("EVA"));
+			}
 		}
 
 		private void OnVesselGoOffRails(Vessel vessel)
@@ -485,8 +478,10 @@ namespace KourageousTourists
 			Log.dbg("entered OnVesselChange={0}", vessel.name);
 			if (vessel.evaController == null)
 				return;
+
 			// OnVesselChange called after OnVesselCreate, but with more things initialized
-			OnVesselCreate(vessel);
+			reinitVessel (vessel);
+			reinitEvents (vessel);
 		}
 
 		private void OnVesselLoad(Vessel vessel)

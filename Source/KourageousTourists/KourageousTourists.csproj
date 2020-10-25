@@ -54,6 +54,7 @@
     <Compile Include="ChuteSupport.cs" />
     <Compile Include="GUI\ShowStopperAlertBox.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="EVASupport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

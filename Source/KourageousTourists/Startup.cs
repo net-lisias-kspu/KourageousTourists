@@ -30,6 +30,7 @@ namespace KourageousTourists
 			try
 			{
 				this.LoadSupportForChutes();
+				this.LoadSupportForEVA();
 			}
 			catch (Exception e)
 			{
@@ -61,6 +62,29 @@ namespace KourageousTourists
 					KSPe.Util.SystemTools.Assembly.LoadAndStartup("KourageousTourists.KSP.Chute.13.RealChute");
 				}
 				else throw new NotSupportedException("You need to install RealChutes on KSP 1.3 for playing Kourageous Tourists /L");
+			}
+			else throw new NotSupportedException("Your current KSP installment is not supported by Kourageous Tourists /L");
+		}
+
+		private void LoadSupportForEVA()
+		{
+			if (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,6,0))
+			{
+				Log.info("Loading EVA Support for [KSP >= 1.6]");
+				KSPe.Util.SystemTools.Assembly.LoadAndStartup("KourageousTourists.KSP.EVA.16");
+			}
+			else if (KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,3,0))
+			{
+				if (null != Type.GetType("KIS.KIS, KIS", false)) // check!
+				{
+					Log.info("Loading EVA Support for [1.3 <= KSP < 1.6] and KIS");
+					KSPe.Util.SystemTools.Assembly.LoadAndStartup("KourageousTourists.KSP.EVA.13.KIS");
+				}
+				else
+				{
+					Log.info("Loading Chute Support for [1.3 <= KSP < 1.6] Stock");
+					KSPe.Util.SystemTools.Assembly.LoadAndStartup("KourageousTourists.KSP.EVA.13");
+				}
 			}
 			else throw new NotSupportedException("Your current KSP installment is not supported by Kourageous Tourists /L");
 		}
