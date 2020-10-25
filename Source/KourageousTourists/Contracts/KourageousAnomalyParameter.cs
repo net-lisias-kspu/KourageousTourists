@@ -67,15 +67,15 @@ namespace KourageousTourists.Contracts
 		}
 
 		private void onSelfieTaken() {
-
 			Log.dbg("onSelfieTaken");
 			foreach (Vessel v in FlightGlobals.VesselsLoaded) {
 				if (
 					v.mainBody == targetBody &&
 					v.GetVesselCrew().Count == 1 &&
 					v.GetVesselCrew () [0].name.Equals (tourist) &&
-					v.situation == Vessel.Situations.LANDED && v.isEVA) {
-
+					v.situation == Vessel.Situations.LANDED &&
+					v.srfSpeed < 0.1f
+				) {
 					Log.dbg("checking for {0} at {1}", tourist, anomalyName);
 					if (this.isNearbyAnomaly (v, anomalyName)) {
 						base.SetComplete ();
@@ -86,8 +86,6 @@ namespace KourageousTourists.Contracts
 		}
 
 		private bool isNearbyAnomaly(Vessel v, string anomalyName) {
-
-
 			// FIXME: Can we have objects with same names, but on different bodies?
 			// FIXME: So far I think we can.
 			GameObject[] obj = UnityEngine.Object.FindObjectsOfType<GameObject>();
