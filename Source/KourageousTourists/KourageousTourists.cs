@@ -622,15 +622,18 @@ namespace KourageousTourists
 
 				KerbalEVA eva = v.evaController;
 				kerbalExpressionSystem expression = getOrCreateExpressionSystem (eva);
-
+				ProtoCrewMember crew = v.GetVesselCrew()[0];
 				if (expression != null) {
-
-					Tourist t;
-					if (!tourists.TryGetValue (v.GetVesselCrew()[0].name, out t))
-						continue;
-
-					expression.wheeLevel = t.whee;
-					expression.fearFactor = t.fear;
+					if (tourists.TryGetValue (crew.name, out Tourist t))
+					{
+						expression.wheeLevel = t.whee;
+						expression.fearFactor = t.fear;
+					}
+					else // Allows crew members to always behave nicely!
+					{
+						expression.wheeLevel = 1f;
+						expression.fearFactor = 0f;
+					}
 
 					/*FlightCamera camera = FlightCamera.fetch;
 					camera.transform.position = eva.transform.position + Vector3.forward * 2;
