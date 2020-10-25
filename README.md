@@ -4,6 +4,8 @@ Tourists sometimes should be able to go EVA. Now they can.
 
 Unofficial fork by Lisias.
 
+**Warning**: this fork deviates from the mainstream. Savegames are interchangeable, but rules and abilities for the Tourists are **different**.
+
 
 ## In a Hurry
 
@@ -24,19 +26,26 @@ This tiny mod empowers your every day tourists for much more kourageous adventur
 
 ### Technical Details
 
-This mod temporarily promotes tourists to crew members in order to allow them go EVA. However, actual EVA ability is restricted based on current tourist experience level and vessel situation. These restrictions are configurable with defaults as follows:
+This mod temporarily promotes tourists to crew members in order to allow them go EVA. However, actual EVA ability is restricted based on current tourist experience level and vessel situation. These restrictions are configurable with defaults as follows (note: this table **deviates from the upstream**):
 
-| Level | EVA allowed when	 | Jetpack  |
-|:-----:|:------------------|:--------:
-| 0     | Landed on Kerbin; not moving | No
-|1      | Landed or Splashed on Kerbin, Landed on Mün or Minmus; surface speed below 1 m/s | 	No
-| 2     | Landed or Splashed anywhere; surface speed below 3 m/s | No
-| 3     | Landed or Splashed anywhere or being on stable orbit; no speed restrictions | No
-| 4     | Landed or Splashed anywhere or being on stable orbit; no speed restrictions | Yes
+| Level | EVA allowed when	 | Jetpack  | SkyDiving |
+|:-----:|:------------------|:--------:|:--------: |    
+| 0     | Not allowed. Use Command Seats for tours ;) | No | No
+| 1     | Landed on Kerbin; surface speed below 1 m/s | No | Yes
+| 2     | Landed or Splashed on Kerbin, landed on Mün or Minmus; surface speed below 3 m/s | No | Yes
+| 3     | Landed or Splashed anywhere or being on stable orbit; no speed restrictions | No | Yes
+| 4     | Landed or Splashed anywhere or being on stable orbit; no speed restrictions | Yes | Yes
 
 Level 5 tourists, if they survived to this, can do basically everything. Tourists gain experience just like regular crew, so for training them to level one, just take them to orbital spaceflight around Kerbin and recover. Level 2 could be obtained by Mün/Minmus landings and this is enough for every possible contract destination. You can also train them onsite using facilities that provide Level up crew function, albeit it does not seem safe enough.
 
-Jetpack fuel is drained if tourist level does not allow using it. Tourists still can not perform things like taking surface samples, collect experiment data or pilot ships, however they can carry stuff if KIS is installed and can take photos of themselves. All kerbals in the scene will notice that and express some emotions depending on their courage and stupidity levels. The photo could be found in standard screenshot directory and looks like Glerina Kerman-Mun-17-03-01-12:06:18.png, i.e. file name contains the name of the kerbal taking photo, planetary body and time when it was taken.  
+This fork also **deviates from the upstream** as follows:
+
+* Level 5 tourists can sky dive even without a contract.
+* Level 1 tourists cannot EVA outside Kerbin, but can be assigned into External Command Seats (and similar parts) for guided tours on celestial bodies.
+* Level 0 tourists cannot EVA at all, but can also be toured using External Command Seats.
+* Tourists that can EVA are allowed to remove the Helmets (KIS needed for KSP \< 1.6).
+
+Jetpack fuel is drained if tourist level does not allows using it. Tourists still can not perform things like taking surface samples, collect experiment data or pilot ships, however they can carry stuff if KIS is installed and can take photos of themselves. All kerbals in the scene will notice that and express some emotions depending on their courage and stupidity levels. The photo could be found in standard screenshot directory and looks like Glerina Kerman-Mun-17-03-01-12:06:18.png, i.e. file name contains the name of the kerbal taking photo, planetary body and time when it was taken.  
 
 This mod also adds three new types of contracts that depend on tourists ability to de-board the vessel. 
 
