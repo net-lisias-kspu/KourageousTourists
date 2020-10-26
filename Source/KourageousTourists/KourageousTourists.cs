@@ -205,7 +205,7 @@ namespace KourageousTourists
 				Log.dbg("tourist: {0}", t);
 			else
 			{
-				Log.error("{0} should be a turist, but it's not!!", crew);
+				Log.error("{0} is not a Tourist. Aborting!", crew);
 				return;
 			}
 
@@ -422,32 +422,35 @@ namespace KourageousTourists
 			crew.type = ProtoCrewMember.KerbalType.Tourist;
 
 			EVASupport.INSTANCE.disableEvaEvents(v, t.hasAbility("EVA"));
-
-			// Adding Selfie button
-			{
-				BaseEventList pEvents = evaCtl.Events;
-				BaseEventDelegate slf = new BaseEventDelegate(TakeSelfie);
-				KSPEvent evt = new KSPEvent
-				{
-					active = true,
-					externalToEVAOnly = true,
-					guiActive = true,
-					guiActiveEditor = false,
-					guiActiveUnfocused = false,
-					guiActiveUncommand = false,
-					guiName = "Take Selfie",
-					name = "TakeSelfie"
-				};
-				BaseEvent selfie = new BaseEvent(pEvents, "Take Selfie", slf, evt);
-				pEvents.Add (selfie);
-				selfie.guiActive = true;
-				selfie.active = true;
-			}
+			this.addSelfie(evaCtl);
 
 			Log.dbg("Initializing sound");
 			// Should we always invalidate cache???
 			fx = null;
 			getOrCreateAudio (evaCtl.part.gameObject);
+		}
+
+		// Adding Selfie button
+		private void addSelfie(KerbalEVA evaCtl)
+		{
+			Log.dbg("Adding Selfie to {0}", evaCtl.GUIName);
+			BaseEventList pEvents = evaCtl.Events;
+			BaseEventDelegate slf = new BaseEventDelegate(TakeSelfie);
+			KSPEvent evt = new KSPEvent
+			{
+				active = true,
+				externalToEVAOnly = true,
+				guiActive = true,
+				guiActiveEditor = false,
+				guiActiveUnfocused = false,
+				guiActiveUncommand = false,
+				guiName = "Take Selfie",
+				name = "TakeSelfie"
+			};
+			BaseEvent selfie = new BaseEvent(pEvents, "Take Selfie", slf, evt);
+			pEvents.Add (selfie);
+			selfie.guiActive = true;
+			selfie.active = true;
 		}
 
 		private void reinitEvents(Part p) {
@@ -462,6 +465,7 @@ namespace KourageousTourists
 				if (!tourists.TryGetValue(kerbalName, out Tourist t)) continue;
 				Log.dbg("crew {0} {1}", kerbalName, t.abilities);
 				EVASupport.INSTANCE.disableEvaEvents(p, t.hasAbility("EVA"));
+				if (p.Modules.Contains<KerbalEVA>()) this.addSelfie(p.Modules.GetModule<KerbalEVA>());
 			}
 		}
 
