@@ -1,6 +1,6 @@
 # Kourageous Tourists :: Change Log
 
-* 2020-1025: 0.5.2.1 (Lisias) for KSP >= 1.3
+* 2021-0220: 0.5.2.2 (Lisias) for KSP >= 1.3
 	+ Add Support for every KSP Version since 1.3
 		- Support for RealChutes is WorkInProgress, but you can try it nevertheless on KSP 1.3... ]:->
 		- For KSP < 1.6, KIS is needed to allow removing Helmets.
@@ -29,6 +29,8 @@
 		- Moving the Kourage.cfg to the `PluginData` folder on the user's installment
 			- Automatically created from template at first run.
 		- Check [template](https://github.com/net-lisias-kspu/KourageousTourists/blob/master/GameData/net.lisias.ksp/KourageousTourists/PluginData/Kourage.cfg) for changes.
+* 2020-1025: 0.5.2.1 (Lisias) for KSP >= 1.3
+	+ ***WITHDRAWN*** due lame mistake on packaging 
 * 2020-0530: 0.5.2 (whale_2) for KSP 1.9.1
 	+ This release fixes some minor bugs, but also makes sky diving contracts unlock only after you've buzzed the tower.
 	+ Added two config options:
