@@ -54,13 +54,13 @@ deploy_plugindata() {
 	local DLL=$1.dll
 
 	if [ -f "./bin/Release/$DLL" ] ; then
-		cp "./bin/Release/$DLL" "./GameData/$TARGETBINDIR/PluginData"
+		cp "./bin/Release/$DLL" "./GameData/$TARGETBINDIR/PluginData/dlls"
 		if [ -d "${KSP_DEV}/GameData/$TARGETBINDIR/PluginData" ] ; then
 			cp "./bin/Release/$DLL" "${KSP_DEV/}GameData/$TARGETBINDIR/PluginData/dlls"
 		fi
 	fi
 	if [ -f "./bin/Debug/$DLL" ] ; then
-		if [ -d "${KSP_DEV}/GameData/$TARGETBINDIR/PluginData" ] ; then
+		if [ -d "${KSP_DEV}/GameData/$TARGETBINDIR/PluginData/dlls" ] ; then
 			cp "./bin/Debug/$DLL" "${KSP_DEV}GameData/$TARGETBINDIR/PluginData/dlls"
 		fi
 	fi
